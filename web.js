@@ -1,13 +1,43 @@
 var async    = require('async');
 var express  = require('express');
+var events   = require('events');
 var util     = require('util');
 var mongoose = require('mongoose');
+var Dbaccess = require('./dbaccess').dbAccessor;
+var qs       = require('querystring');
 var url = require('url');
 var path = require('path');
 
 var challenge_id = -1;
 
-//mongoose.connect('mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PWD + '@linus.mongohq.com:10039/app11523105');
+Eventer = function(){
+  events.EventEmitter.call(this);
+  this.createChallenge = function( creator, inTitle, inType, inMinmax ){
+    this.emit('createChallenge',  creator, inTitle, inType, inMinmax );
+  }
+
+  this.createEntry = function(creator, inTitle, inChallenge, inMetric, inContent ){
+    this.emit('createEntry', creator, inTitle, inChallenge, inMetric, inContent );
+  }
+ };
+
+util.inherits(Eventer, events.EventEmitter);
+
+Listener = function(){
+  this.createChallengeHandler =  function( creator, inTitle, inType, inMinmax ){
+    //console.log('works');
+    dbaccess.createChallenge( creator, inTitle, inType, inMinmax );
+  },
+  this.createEntryHandler = function(creator, inTitle, inChallenge, inMetric, inContent ){
+    dbaccess.createEntry(userId, Value, challengeName);
+  }
+};
+
+var eventer = new Eventer();
+var listener = new Listener(eventer);
+
+eventer.on('createChallenge',listener.createChallengeHandler);
+eventer.on('createEntry',listener.createEntryHandler);
 
 // create an express webserver
 var app = express.createServer(
@@ -63,6 +93,17 @@ function render_page(req, res, pgPath) {
   });
 }
 
+function handle_request(req, res) {
+  if (req.method == 'POST') {
+    var body = '';
+    req.on('data', function (data) {
+        body += data;
+    });
+    req.on('end', function () {
+      var POST = qs.parse(body);
+      
+    });
+
 function handle_facebook_request(req, res) {
 
   // if the user is logged in
@@ -104,6 +145,7 @@ function handle_facebook_request(req, res) {
   } else {
     render_page(req, res, 'index.ejs');
   }
+  render_page(req, res);
 }
 function print_id() {
 	console.log(challenge_id);
