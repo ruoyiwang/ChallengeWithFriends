@@ -12,12 +12,12 @@ _db.on('error', function (err) {
 });
 _db.once('open', function callback () {
 		console.log("yay! successful db connection :D!");
-		_challenges.ensureIndex({ title: 1 }, { unique: true });
-		_entries.ensureIndex({ title:1, challenge: 1 }, { unique: true });
 		dbAccessor.prototype._challenges = _db.collection('challenges');
 		dbAccessor.prototype._entries = _db.collection('entries');
 		dbAccessor.prototype._users = _db.collection('users');
-		eventer.createChallenge('123','this is a challenge.', 'some Type', 'min');
+		_challenges.ensureIndex({ title: 1 }, { unique: true });
+		_entries.ensureIndex({ title:1, challenge: 1 }, { unique: true });
+		//eventer.createChallenge('123','this is a challenge.', 'some Type', 'min');
 });
 
 dbAccessor.prototype._db = _db;
