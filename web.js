@@ -3,7 +3,7 @@ var express  = require('express');
 var util     = require('util');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PWD + '@linus.mongohq.com:10039/app11523105');
+//mongoose.connect('mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PWD + '@linus.mongohq.com:10039/app11523105');
 
 // create an express webserver
 var app = express.createServer(
@@ -59,6 +59,20 @@ function render_page(req, res) {
   });
 }
 
+function render_page2(req, res) {
+  console.log("in render_page2");
+  req.facebook.app(function(app) {
+    req.facebook.me(function(user) {
+      res.render('pg.ejs', {
+        layout:    false,
+        req:       req,
+        app:       app,
+        user:      user
+      });
+    });
+  });
+}
+
 function handle_facebook_request(req, res) {
 
   // if the user is logged in
@@ -101,6 +115,6 @@ function handle_facebook_request(req, res) {
     render_page(req, res);
   }
 }
-
+app.get('/view', render_page2);
 app.get('/', handle_facebook_request);
 app.post('/', handle_facebook_request);
