@@ -18,6 +18,7 @@ _db.once('open', function callback () {
 		//dbAccessor.prototype._challenges.ensureIndex({ title: 1 }, { unique: true });
 		//dbAccessor.prototype._entries.ensureIndex({ title:1, challenge: 1 }, { unique: true });
 		//eventer.createChallenge('123','this is a challenge.', 'some Type', 'min');
+		dbAccessor.prototype.createChallenge('S','W','A','G');
 });
 
 dbAccessor.prototype._db = _db;
