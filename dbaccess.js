@@ -6,17 +6,16 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PWD + '@linus.mongohq.com:10039/app11523105');
 
 var _db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
+_db.on('error', console.error.bind(console, 'connection error:'));
+_db.once('open', function callback () {
 		console.log("yay! successful db connection :D!");
+		_challenges.ensureIndex({ title: 1 }, { unique: true });
+		_entries.ensureIndex({ title:1, challenge: 1 }, { unique: true });
 });
 
 var _challenges = mongoose.Collection('challenges',_db);
 var _entries = mongoose.Collection('entries',_db);
 var _users = mongoose.Collection('users',_db);
-
-_challenges.ensureIndex({ title: 1 }, { unique: true });
-_entries.ensureIndex({ title:1, challenge: 1 }, { unique: true });
 
 
 function getChallenges() {
