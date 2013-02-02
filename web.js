@@ -2,6 +2,10 @@ var async    = require('async');
 var express  = require('express');
 var util     = require('util');
 var mongoose = require('mongoose');
+var url = require('url');
+var path = require('path');
+
+var challenge_id = -1;
 
 //mongoose.connect('mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PWD + '@linus.mongohq.com:10039/app11523105');
 
@@ -46,24 +50,10 @@ app.dynamicHelpers({
   },
 });
 
-function render_page(req, res) {
+function render_page(req, res, pgPath) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
-      res.render('index.ejs', {
-        layout:    false,
-        req:       req,
-        app:       app,
-        user:      user
-      });
-    });
-  });
-}
-
-function render_page2(req, res) {
-  console.log("in render_page2");
-  req.facebook.app(function(app) {
-    req.facebook.me(function(user) {
-      res.render('pg.ejs', {
+      res.render(pgPath, {
         layout:    false,
         req:       req,
         app:       app,
@@ -108,13 +98,31 @@ function handle_facebook_request(req, res) {
         });
       }
     ], function() {
-      render_page(req, res);
+      render_page(req, res, 'index.ejs');
     });
 
   } else {
-    render_page(req, res);
+    render_page(req, res, 'index.ejs');
   }
 }
-app.get('/view', render_page2);
+function print_id() {
+	console.log(challenge_id);
+	console.log(challenge_id);
+}
+
+// Routing the pages
+app.get('/data', function (req, res) {
+    var url = req.url;
+	console.log("url: "+url);
+	challenge_id = url.split("/").pop();
+	console.log("challenge_id: "+challenge_id);
+	render_page(req, res, 'data.ejs');
+	console.log("challenge_id: "+challenge_id);
+});
+app.get('/view', function(req, res) { render_page(req, res, 'pg.ejs')});
+app.get('/index', function(req, res) { render_page(req, res, 'index.ejs')});
 app.get('/', handle_facebook_request);
 app.post('/', handle_facebook_request);
+app.get('*', function(req, res){
+	res.send('404 Sorry! Page is not found :(', 404);
+});
