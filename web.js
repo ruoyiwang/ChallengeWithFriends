@@ -46,7 +46,7 @@ app.dynamicHelpers({
 function render_page(req, res) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
-      res.render('pg.ejs', {
+      res.render('index.ejs', {
         layout:    false,
         req:       req,
         app:       app,
