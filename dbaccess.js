@@ -18,7 +18,9 @@ _db.once('open', function callback () {
 		//dbAccessor.prototype._challenges.ensureIndex({ title: 1 }, { unique: true });
 		//dbAccessor.prototype._entries.ensureIndex({ title:1, challenge: 1 }, { unique: true });
 		//eventer.createChallenge('123','this is a challenge.', 'some Type', 'min');
-		dbAccessor.prototype.createChallenge('S','W','A','G');
+		dbAccessor.prototype.createChallenge('S','W','A','G', function(err, record) {
+				console.log("SWAAAAAAG CHECK DA DB SON");
+		});
 });
 
 dbAccessor.prototype._db = _db;
@@ -78,11 +80,11 @@ dbAccessor.prototype.findChallenges = function( query, callback ) {
 };
 
 dbAccessor.prototype.createEntry = function( creator, inTitle, inChallenge, inMetric, inContent, callback ) {
-		this._entries.insert({ user: creator, title: inTitle, challenge: inChallenge, metric: inMetric, content: inContent }, { safe: true }, callback(err, records));
+		this._entries.insert({ user: creator, title: inTitle, challenge: inChallenge, metric: inMetric, content: inContent }, { safe: true }, callback);
 };
 
 dbAccessor.prototype.createChallenge = function( creator, inTitle, inType, inMinmax, callback ) {
-		this._challenges.save({ user: creator, title: inTitle, type: inType, minmax: inMinmax }, { safe: true }, callback(err, records));
+		this._challenges.save({ user: creator, title: inTitle, type: inType, minmax: inMinmax }, { safe: true }, callback);
 };
 
 
