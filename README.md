@@ -1,4 +1,4 @@
-PotluckWithFriends
+ChanllengeWithFriends
 ==================
 
-potluck with friends
+challenge with friends
