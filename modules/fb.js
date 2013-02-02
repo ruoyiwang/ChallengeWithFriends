@@ -28,43 +28,19 @@ function get_self_id(){
     });
 }
 
-//fuck repeated code
-function populate_top_three_images(id1, id2, id3){
-    call = '/me?fields=id,friends.uid('+id1+').fields(username)';
+//callback with the profile picture url
+function get_friends_profile_picture(id, callback){
+    call = '/me?fields=id,friends.uid('+id+').fields(username)';
     call = make_url(call);
     FB.api(url, function(response){
         friend_user_name = response.username;
 
         profile_pic_url = 'https://graph.facebook.com/'+friend_user_name+'/picture';
         //got their usernme
-        document.getElementById('somerandomtshit').innerHTML ="<img src="+profile_pic_url+" width='100' height='100'>";
-        //do other shit that other ppl needs
-    });
-
-
-    call = '/me?fields=id,friends.uid('+id2+').fields(username)';
-    call = make_url(call);
-    FB.api(url, function(response){
-        friend_user_name = response.username;
-
-        profile_pic_url = 'https://graph.facebook.com/'+friend_user_name+'/picture';
-        //got their usernme
-        document.getElementById('someotherrandomshit').innerHTML ="<img src="+profile_pic_url+" width='100' height='100'>";
-        //do other shit that other ppl needs
-    });
-
-
-    call = '/me?fields=id,friends.uid('+id3+').fields(username)';
-    call = make_url(call);
-    FB.api(url, function(response){
-        friend_user_name = response.username;
-
-        profile_pic_url = 'https://graph.facebook.com/'+friend_user_name+'/picture';
-        //got their usernme
-        document.getElementById('somerandomshitotherthatthoseshits').innerHTML ="<img src="+profile_pic_url+" width='100' height='100'>";
-        //do other shit that other ppl needs
+        callback(profile_pic_url);
     });
 }
+
 
 function get_list_of_friends(callback){
     call = make_url('/me?fields=id,friends.fields(username,id)');
@@ -72,6 +48,7 @@ function get_list_of_friends(callback){
     FB.api(url, function(response){
         list_of_friends = response.friends.data;
         callback(list_of_friends);
+        //each item in list has an username and an id
     });
 }
 
