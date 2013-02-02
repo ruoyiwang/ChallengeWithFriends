@@ -4,23 +4,26 @@ var util     = require('util');
 var mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGOHQ_URL);
+<<<<<<< HEAD
 //mongoose.connect('mongodb://localhost/SomeDb');
+=======
+
+>>>>>>> db262c1dfa78e8c72bd0040f6ecb6d7ee24523a6
 dbAccessor = function(){};
 var _db = mongoose.connection;
-//console.log(_db);
 _db.on('error', function (err) {
 		console.log(err);
-	});
-//_db.on('error', console.error.bind(console, 'connection error:'));
+});
 _db.once('open', function callback () {
 		console.log("yay! successful db connection :D!");
-		_challenges.ensureIndex({ title: 1 }, { unique: true });
-		_entries.ensureIndex({ title:1, challenge: 1 }, { unique: true });
 		dbAccessor.prototype._challenges = _db.collection('challenges');
 		dbAccessor.prototype._entries = _db.collection('entries');
 		dbAccessor.prototype._users = _db.collection('users');
+		_challenges.ensureIndex({ title: 1 }, { unique: true });
+		_entries.ensureIndex({ title:1, challenge: 1 }, { unique: true });
 		//eventer.createChallenge('123','this is a challenge.', 'some Type', 'min');
 });
+
 dbAccessor.prototype._db = _db;
 
 dbAccessor.prototype.getChallenges = function(callback) {
