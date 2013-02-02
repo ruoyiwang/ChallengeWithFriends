@@ -3,7 +3,7 @@ var express  = require('express');
 var util     = require('util');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://heroku:c94482f5274826b0a48e40c8420c4795@linus.mongohq.com:10039/app11523105');
+mongoose.connect(process.env.MONGOHQ_URL);
 //mongoose.connect('mongodb://localhost/SomeDb');
 dbAccessor = function(){};
 var _db = mongoose.connection;

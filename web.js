@@ -1,9 +1,39 @@
 var async    = require('async');
 var express  = require('express');
+var events   = require('events');
 var util     = require('util');
 var mongoose = require('mongoose');
+var Dbaccess = require('./dbaccess').dbAccessor;
+var qs       = require('querystring');
 
-//mongoose.connect('mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PWD + '@linus.mongohq.com:10039/app11523105');
+Eventer = function(){
+  events.EventEmitter.call(this);
+  this.createChallenge = function( creator, inTitle, inType, inMinmax ){
+    this.emit('createChallenge',  creator, inTitle, inType, inMinmax );
+  }
+
+  this.createEntry = function(creator, inTitle, inChallenge, inMetric, inContent ){
+    this.emit('createEntry', creator, inTitle, inChallenge, inMetric, inContent );
+  }
+ };
+
+util.inherits(Eventer, events.EventEmitter);
+
+Listener = function(){
+  this.createChallengeHandler =  function( creator, inTitle, inType, inMinmax ){
+    //console.log('works');
+    dbaccess.createChallenge( creator, inTitle, inType, inMinmax );
+  },
+  this.createEntryHandler = function(creator, inTitle, inChallenge, inMetric, inContent ){
+    dbaccess.createEntry(userId, Value, challengeName);
+  }
+};
+
+var eventer = new Eventer();
+var listener = new Listener(eventer);
+
+eventer.on('createChallenge',listener.createChallengeHandler);
+eventer.on('createEntry',listener.createEntryHandler);
 
 // create an express webserver
 var app = express.createServer(
@@ -73,48 +103,22 @@ function render_page2(req, res) {
   });
 }
 
-function handle_facebook_request(req, res) {
-
-  // if the user is logged in
-  if (req.facebook.token) {
-
-    async.parallel([
-      function(cb) {
-        // query 4 friends and send them to the socket for this socket id
-        req.facebook.get('/me/friends', { limit: 4 }, function(friends) {
-          req.friends = friends;
-          cb();
-        });
-      },
-      function(cb) {
-        // query 16 photos and send them to the socket for this socket id
-        req.facebook.get('/me/photos', { limit: 16 }, function(photos) {
-          req.photos = photos;
-          cb();
-        });
-      },
-      function(cb) {
-        // query 4 likes and send them to the socket for this socket id
-        req.facebook.get('/me/likes', { limit: 4 }, function(likes) {
-          req.likes = likes;
-          cb();
-        });
-      },
-      function(cb) {
-        // use fql to get a list of my friends that are using this app
-        req.facebook.fql('SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1', function(result) {
-          req.friends_using_app = result;
-          cb();
-        });
-      }
-    ], function() {
-      render_page(req, res);
+function handle_post_request(req, res) {
+  if (req.method == 'POST') {
+    var body = '';
+    req.on('data', function (data) {
+        body += data;
     });
-
-  } else {
-    render_page(req, res);
+    req.on('end', function () {
+      var POST = qs.parse(body);
+      
+    });
   }
+  render_page(req, res);
 }
+
+
+
 app.get('/view', render_page2);
-app.get('/', handle_facebook_request);
-app.post('/', handle_facebook_request);
+app.get('/', handle_request);
+app.post('/', handle_request);
