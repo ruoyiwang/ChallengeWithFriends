@@ -3,8 +3,6 @@ var express  = require('express');
 var util     = require('util');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PWD + '@linus.mongohq.com:10039/app11523105');
-
 // create an express webserver
 var app = express.createServer(
   express.logger(),
