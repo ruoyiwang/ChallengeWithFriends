@@ -15,16 +15,7 @@ _db.once('open', function callback () {
 		dbAccessor.prototype._challenges = _db.collection('challenges');
 		dbAccessor.prototype._entries = _db.collection('entries');
 		dbAccessor.prototype._users = _db.collection('users');
-		dbAccessor.prototype._challenges.ensureIndex({ title: 1 }, { unique: true }, function(err, result) { if (err != null) { console.log("ENSUREINDEX ERROR:" + err); } });
-		dbAccessor.prototype._entries.ensureIndex({ title:1, challenge: 1 }, { unique: true }, function(err, result) { if (err != null) { console.log("ENSUREINDEX ERROR:" + err); } });
 		//eventer.createChallenge('123','this is a challenge.', 'some Type', 'min');
-		dbAccessor.prototype.createChallenge('S','W','A','G', function(err, record) {
-				if (err != null) {
-						console.log("INSERT ERROR:" + err);
-				} else {
-						console.log("SWAAAAAAG CHECK DA DB SON");
-				}
-		});
 });
 
 dbAccessor.prototype._db = _db;
