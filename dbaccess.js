@@ -21,16 +21,16 @@ _db.once('open', function callback () {
 dbAccessor.prototype._db = _db;
 
 dbAccessor.prototype.getChallenges = function(callback) {
-		callback(this._challenges.find().all());
+		callback(this._challenges.find({});
 };
 
 dbAccessor.prototype.getEntries = function(callback) {
-		callback(this._entries.find().all());
+		callback(this._entries.find({}));
 };
 
 dbAccessor.prototype.getTopPlacer = function( challenge, callback ) {
 		var match = this._challenges.findOne({ title: challenge });
-		var top = match.entries.find().sort({ upvotes:-1 }).limit(1);
+		var top = match.entries.find({}).sort({ upvotes:-1 }).limit(1);
 		callback(top);
 };
 
