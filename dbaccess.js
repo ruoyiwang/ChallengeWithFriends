@@ -15,8 +15,6 @@ _db.once('open', function callback () {
 		dbAccessor.prototype._challenges = _db.collection('challenges');
 		dbAccessor.prototype._entries = _db.collection('entries');
 		dbAccessor.prototype._users = _db.collection('users');
-		dbAccessor.prototype._challenges.ensureIndex({ title: 1 }, { unique: true });
-		dbAccessor.prototype._entries.ensureIndex({ title:1, challenge: 1 }, { unique: true });
 		//eventer.createChallenge('123','this is a challenge.', 'some Type', 'min');
 });
 
@@ -41,27 +39,17 @@ dbAccessor.prototype.getChallengeByTitle = function( inTitle, callback ) {
 		callback(match);
 };
 
-dbAccessor.prototype.getChallengeByType = function( inType, callback ) {
+dbAccessor.prototype.getChallengesByType = function( inType, callback ) {
 		var match = this._challenges.find({ title: inTitle });
 		callback(match);
 };
 
-dbAccessor.prototype.getChallengeByCreator = function( creator, callback ) {
+dbAccessor.prototype.getChallengesByCreator = function( creator, callback ) {
 		var match = this._challenges.find({ user: creator });
 		callback(match);
 };
 
-dbAccessor.prototype.getEntryByTitle = function( inTitle, callback ) {
-		var match = this._entries.find({ title: inTitle });
-		callback(match);
-};
-
-dbAccessor.prototype.getEntryByCreator = function( creator, callback ) {
-		var match = this._entries.find({ user: creator });
-		callback(match);
-};
-
-dbAccessor.prototype.getEntryByCreator = function( creator, callback ) {
+dbAccessor.prototype.getEntriesByCreator = function( creator, callback ) {
 		var match = this._entries.find({ user: creator });
 		callback(match);
 };
@@ -71,25 +59,25 @@ dbAccessor.prototype.findEntries = function( query, callback ) {
 		callback(match);
 };
 
-dbAccessor.prototype.indChallenges = function( query, callback ) {
+dbAccessor.prototype.findChallenges = function( query, callback ) {
 		var match = this._entries.find(query);
 		callback(match);
 };
 
-dbAccessor.prototype.createEntry = function( creator, inTitle, inChallenge, inMetric, inContent ) {
-		this._entries.insert({ user: creator, title: inTitle, challenge: inChallenge, metric: inMetric, content: inContent });
+dbAccessor.prototype.createEntry = function( creator, inTitle, inChallenge, inMetric, inContent, callback ) {
+		this._entries.save({ user: creator, title: inTitle, challenge: inChallenge, metric: inMetric, content: inContent }, { safe: true }, callback);
 };
 
-dbAccessor.prototype.createChallenge = function( creator, inTitle, inType, inMinmax ) {
-		this._challenges.insert({ user: creator, title: inTitle, type: inType, minmax: inMinmax });
+dbAccessor.prototype.createChallenge = function( creator, inTitle, inType, inMinmax, callback ) {
+		this._challenges.save({ user: creator, title: inTitle, type: inType, minmax: inMinmax }, { safe: true }, callback);
 };
 
 
-dbAccessor.prototype.getUsers = function( callback) {
+dbAccessor.prototype.getUsers = function( callback ) {
 		callback(this._users);
 };
 
-dbAccessor.prototype.getUserById = function( inUserId, callback) {
+dbAccessor.prototype.getUserById = function( inUserId, callback ) {
 		var match = this._users.find({ userId: inUserId });
 		callback(match);
 };
