@@ -46,30 +46,4 @@ function get_list_of_friends(callback){
     });
 }
 
-// Initialise the Photo Selector with options that will apply to all instances
-		CSPhotoSelector.init({debug: true});
 
-		// Create Photo Selector instances
-		selector = CSPhotoSelector.newInstance({
-			callbackAlbumSelected	: callbackAlbumSelected,
-			callbackAlbumUnselected	: callbackAlbumUnselected,
-			callbackPhotoSelected	: callbackPhotoSelected,
-			callbackPhotoUnselected	: callbackPhotoUnselected,
-			callbackSubmit			: callbackSubmit,
-			maxSelection			: 1,
-			albumsPerPage			: 6,
-			photosPerPage			: 200,
-			autoDeselection			: true
-		});
-
-		// reset and show album selector
-		selector.reset();
-		selector.showAlbumSelector(id);
-	}
-
-	$(".photoSelect").click(function (e) {
-		e.preventDefault();
-		id = null;
-		if ( $(this).attr('data-id') ) id = $(this).attr('data-id');
-		fbphotoSelect(id);
-	});
