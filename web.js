@@ -40,7 +40,7 @@ function render_page(req, res, pgPath, option) {
     req.facebook.me(function(user) {
       fs.readFile(pgPath, function (err, data) {
         if (err) throw err;
-        var output = Mustache.render(data.toString(), object_to_render);
+        var output = mustache.render(data.toString(), option);
         res.send(output);
       });
     });
