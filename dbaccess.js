@@ -21,22 +21,21 @@ _db.once('open', function callback () {
 dbAccessor.prototype._db = _db;
 
 dbAccessor.prototype.getChallenges = function(callback) {
-	var cursor = this._challenges.find({},function(err,cursor){
-		var list = [];
-		cursor.foreach(function(item){
-			list.append(item);
+	this._challenges.find({},function(err,cursor){
+		cursor.toArray(function(err,list)
+		{
+			callback(list);
+			console.log(list);
 		});
-		callback(list);
 	});
 };
 
 dbAccessor.prototype.getEntries = function(callback) {
-	var cursor = this._entries.find({},function(err,cursor){
-		var list = [];
-		cursor.foreach(function(item){
-			list.append(item);
+	this._entries.find({},function(err,cursor){
+		cursor.toArray(function(err,list)
+		{
+			callback(list);
 		});
-		callback(list);
 	});
 };
 
