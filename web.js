@@ -44,8 +44,8 @@ function render_page(req, res, pgPath, option) {
         if (err) throw err;
         mustache.render(data.toString(), option, function(err, output)
         {
+          if (err) throw err;
           res.send(output);
-
         });
       });
     });
