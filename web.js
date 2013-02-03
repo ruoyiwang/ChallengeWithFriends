@@ -71,36 +71,22 @@ function render_page(req, res, pgPath) {
   });
 }
 
-function handle_post_request(req, res) {
-  if (req.method == 'POST') {
-    var body = '';
-    req.on('data', function (data) {
-        body += data;
-    });
-    req.on('end', function () {
-      var POST = qs.parse(body);
-      if (req.body.buttonClicked == 'gotoChallenge')
-      {
-        render_page(req,res,'challenge.html', {});
-      }
-      else if (req.body.buttonClicked == 'saveChallenge')
-      {
-        render_page(req,res,'index.html', {});
-      }
-      else if (req.body.buttonClicked == 'saveEntry')
-      {
-        render_page(req,res,'challenge.html', {});
-      }
-      else if (req.body.buttonClicked == 'gotoMain')
-      {
-        render_page(req,res,'challenge.html', {});
-      }
-        res.send();
-    });
+function handle_index_post_request(req, res) {
+  dbaccess.findEntriesBychallenge(null, function(match)
+  {
+    render_page(req,res,'challenge.html', {});
+  });
+}
 
 function handle_get_request(req, res) {
+  if (req.method == "GET")
+  {
+    dbaccess.insert(null, function(match)
+    {
+      render_page(req, res, 'index.html', match);
+    });
+  }
 
-    render_page(req, res, 'index.ejs');
 }
 function print_id() {
 	console.log(challenge_id);
@@ -117,7 +103,7 @@ app.get('/data', function (req, res) {
 	console.log("challenge_id: "+challenge_id);
 });
 app.get('/index', handle_get_request);
-app.post('/index', handle_post_request);
+app.post('/index', handle_index_post_request);
 app.get('/', handle_get_request);
 app.post('/', handle_post_request);
 app.get('*', function(req, res){
