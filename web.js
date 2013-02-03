@@ -78,6 +78,7 @@ function handle_get_request(req, res) {
   dbaccess.getChallenges(function (match)
   {
     console.log(match);
+    
     render_page(req, res, '/views/index.html', {challenge_list:match});    
   });
 
