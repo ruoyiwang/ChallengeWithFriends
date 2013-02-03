@@ -24,8 +24,8 @@ dbAccessor.prototype.getChallenges = function(callback) {
 	this._challenges.find({},function(err,cursor){
 		cursor.toArray(function(err,list)
 		{
-			callback(list);
 			console.log(list);
+			callback(list);
 		});
 	});
 };
@@ -41,43 +41,58 @@ dbAccessor.prototype.getEntries = function(callback) {
 
 dbAccessor.prototype.getTopPlacer = function( challenge, callback ) {
 		var match = this._challenges.findOne({ title: challenge });
-		var top = match.entries.find().sort({ upvotes:-1 }).limit(1);
+		var top = match.entries.find({},function(err,cursor){
+				cursor.toArray(function(err,list)
+											 {
+													 callback(list);
+											 });
+		}).sort({ upvotes:-1 }).limit(1);
 		callback(top);
 };
 
 dbAccessor.prototype.getChallengeByTitle = function( inTitle, callback ) {
-		var match = this._challenges.findOne({ title: inTitle });
-		callback(match);
+		var match = this._challenges.findOne({ title: inTitle },function(err,cursor){
+				cursor.toArray(function(err,list)
+											 {
+													 callback(list);
+											 });
+		});
 };
 
 dbAccessor.prototype.getChallengesByType = function( inType, callback ) {
-		var match = this._challenges.find({ title: inTitle });
-		callback(match);
+		var match = this._challenges.find({ type: inType },function(err,cursor){
+				cursor.toArray(function(err,list)
+											 {
+													 callback(list);
+											 });
+		});
 };
 
 dbAccessor.prototype.getChallengesByCreator = function( creator, callback ) {
-		var match = this._challenges.find({ user: creator });
-		callback(match);
+		var match = this._challenges.find({ user: creator },function(err,cursor){
+				cursor.toArray(function(err,list)
+											 {
+													 callback(list);
+											 });
+		});
 };
 
 dbAccessor.prototype.getEntriesByCreator = function( creator, callback ) {
-		var match = this._entries.find({ user: creator });
-		callback(match);
+		var match = this._entries.find({ user: creator },function(err,cursor){
+				cursor.toArray(function(err,list)
+											 {
+													 callback(list);
+											 });
+		});
 };
 
 dbAccessor.prototype.getEntriesByChallenge = function( inChallenge, callback ) {
-		var match = this._entries.find({ challenge: inChallenge });
-		callback(match);
-};
-
-dbAccessor.prototype.findEntries = function( query, callback ) {
-		var match = this._entries.find(query);
-		callback(match);
-};
-
-dbAccessor.prototype.findChallenges = function( query, callback ) {
-		var match = this._challenges.find(query);
-		callback(match);
+		var match = this._entries.find({ challenge: inChallenge },function(err,cursor){
+				cursor.toArray(function(err,list)
+											 {
+													 callback(list);
+											 });
+		});
 };
 
 dbAccessor.prototype.createEntry = function( creator, inTitle, inChallenge, inContent, callback ) {
@@ -95,12 +110,22 @@ dbAccessor.prototype.createChallenge = function( creator, inTitle, callback ) {
 
 
 dbAccessor.prototype.getUsers = function( callback ) {
-		callback(this._users);
+		this._users.find({},function(err,cursor){
+				cursor.toArray(function(err,list)
+											 {
+													 callback(list);
+													 console.log(list);
+											 });
+		});
 };
 
 dbAccessor.prototype.getUserById = function( inUserId, callback ) {
-		var match = this._users.find({ userId: inUserId });
-		callback(match);
+		var match = this._users.find({ userId: inUserId },function(err,cursor){
+				cursor.toArray(function(err,list)
+											 {
+													 callback(list);
+											 });
+		});
 };
 
 exports.dbAccessor = dbAccessor;

@@ -4,7 +4,7 @@ var events   = require('events');
 var util     = require('util');
 var Dbaccess = require('./dbaccess').dbAccessor;
 var qs       = require('querystring');
-var mustache = require('mustache');
+var mu = require('mu2');
 var url = require('url');
 var path = require('path');
 var fs = require('fs');
@@ -34,19 +34,13 @@ var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-app.register('.html', mustache);
 
 
 function render_page(req, res, pgPath, option) {
-  req.facebook.app(function(app) {
-    req.facebook.me(function(user) {
-      fs.readFile(process.cwd()+pgPath, function (err, data) {
-        if (err) throw err;
-        var output = mustache.render(data.toString(), option);
-        res.send(output);
-      });
-    });
-  });
+    console.log(option);
+    mu.root = __dirname + '/views';
+    var stream = mu.compileAndRender(pgPath, option);
+    util.pump(stream, res);
 }
 
 function handle_category_post_request(req, res) {
@@ -59,7 +53,7 @@ function handle_category_post_request(req, res) {
 function handle_category_set_request(req, res) {
   //dbaccess.createChallenge(null, req.category, function(match)
   //{
-    render_page(req,res,'/views/challenge.html', {});
+    render_page(req,res,'challenge.html', {});
   //});
 }
 
@@ -73,18 +67,19 @@ function handle_entry_post_request(req, res) {
 
 function handle_get_request(req, res) {
 
-  dbaccess.getChallenges(function (err, match)
+  dbaccess.getChallenges(function (match)
   {
-    console.log(match);
 
-    render_page(req, res, '/views/index.html', {"challenge_list":match});    
+    var opts = {"challenge_list": match};
+    render_page(req, res, 'index.html', opts);    
   });
 
 }
 
 function handle_index_get_request(req, res) {
-  dbaccess.getEntriesByChallenge(req.data.challenge, function(match) {
-    render_page(req, res, '/views/challenge.html', {});
+  dbaccess.getEntriesByChallenge(req.data.challenge, function(match) 
+  {
+    render_page(req, res, 'challenge.html', {});
   });
 }
 
