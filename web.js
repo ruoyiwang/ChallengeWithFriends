@@ -40,7 +40,7 @@ function render_page(req, res, pgPath, option) {
     req.facebook.me(function(user) {
       console.log(pgPath);
       var html = mustache.to_html(pgPath,option);
-      sys.put(html);
+      res.send(html);
     });
   });
 }
