@@ -16,7 +16,6 @@ var dbaccess= new Dbaccess();
 var app = express.createServer(
   express.logger(),
   express.static(__dirname + '/views/static'),
-  express.static(__dirname + '/views/webfonts'),
   express.bodyParser(),
   express.cookieParser(),
   // set this to a secret value to encrypt session cookies
