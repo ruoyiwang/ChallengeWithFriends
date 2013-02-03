@@ -4,6 +4,11 @@ $(document).ready(function() {
 		$('#form').show();
 	});
 
+	$("#form").hover(function() {}, function() {
+		$('#form').hide();
+		$('#submit-challenge-button').show();
+	});
+
 	$("#challenge-submit-button").click(function () {
 		$.ajax({
 			type: "POST",
