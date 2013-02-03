@@ -51,18 +51,24 @@ function render_page(req, res, pgPath, option) {
 }
 
 function handle_category_post_request(req, res) {
-    console.log(req);
   dbaccess.createChallenge(null, req.category, function(match)
   {
-    render_page(req,res,'/views/challenge.html', {});
+    res.redirect('/category');
   });
+}
+
+function handle_category_set_request(req, res) {
+  //dbaccess.createChallenge(null, req.category, function(match)
+  //{
+    render_page(req,res,'/views/challenge.html', {});
+  //});
 }
 
 function handle_entry_post_request(req, res) {
 
-  dbaccess.createEntry(null, req.data.challenge, req.data.unit, req.data.order, function(match)
+  dbaccess.createEntry(null, req.challenge, function(match)
   {
-    render_page(req,res,'/views/challenge.html', {});
+    res.redirect('/category');
   });
 }
 
@@ -90,6 +96,7 @@ app.get('/data', function (req, res) {
 	render_page(req, res, 'data.ejs');
 	console.log("challenge_id: "+challenge_id);
 });
+app.set('/category', handle_category_set_request);
 app.post('/category', handle_category_post_request);
 app.post('/entry', handle_entry_post_request);
 app.get('/index', handle_index_get_request);
