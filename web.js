@@ -7,6 +7,7 @@ var qs       = require('querystring');
 var mustache = require('mustache');
 var url = require('url');
 var path = require('path');
+var fs = require('fs');
 
 var challenge_id = -1;
 
