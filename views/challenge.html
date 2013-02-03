@@ -4,11 +4,14 @@
 	<meta charset="utf-8"/>
 	<title>BEATit</title>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:700,300|Oswald:400,300' rel='stylesheet' type='text/css'>
-	<link href="static/normalize.css" rel="stylesheet" type="text/css">
-	<link href="static/sofab.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="//dry-garden-9340.herokuapp.com/static/csphotoselector.css" />
+	<link href="//dry-garden-9340.herokuapp.com/static/normalize.css" rel="stylesheet" type="text/css">
+	<link href="//dry-garden-9340.herokuapp.com/static/sofab.css" rel="stylesheet" type="text/css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	<script type="text/javascript" src="//dry-garden-9340.herokuapp.com/static/fb.js"></script>
+	<script type="text/javascript" src="//dry-garden-9340.herokuapp.com/static/csphotoselector.js"></script>
 	<script type="text/javascript" src="//connect.facebook.net/en_US/all.js"></script>
-	<script src="static/jayz.js"></script>
+	<script src="//dry-garden-9340.herokuapp.com/static/jayz.js"></script>
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -20,32 +23,64 @@
 </header>
 <body>
 	<div id="fb-root"></div>
+	<div id="CSPhotoSelector">
+		<div class="CSPhotoSelector_dialog">
+			<a href="#" id="CSPhotoSelector_buttonClose">x</a>
+			<div class="CSPhotoSelector_form">
+				<div class="CSPhotoSelector_header">
+					<p>Choose from Photos</p>
+				</div>
+
+				<div class="CSPhotoSelector_content CSAlbumSelector_wrapper">
+					<p>Browse your albums until you find a picture you want to use</p>
+					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+						<div class="CSPhotoSelector_selectedCountContainer">Select an album</div>
+					</div>
+					<div class="CSPhotoSelector_photosContainer CSAlbum_container"></div>
+				</div>
+
+				<div class="CSPhotoSelector_content CSPhotoSelector_wrapper">
+					<p>Select a new photo</p>
+					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+						<div class="CSPhotoSelector_selectedCountContainer"><span class="CSPhotoSelector_selectedPhotoCount">0</span> / <span class="CSPhotoSelector_selectedPhotoCountMax">0</span> photos selected</div>
+						<a href="#" id="CSPhotoSelector_backToAlbums">Back to albums</a>
+					</div>
+					<div class="CSPhotoSelector_photosContainer CSPhoto_container"></div>
+				</div>
+
+				<div id="CSPhotoSelector_loader"></div>
+
+
+				<div class="CSPhotoSelector_footer CSPhotoSelector_clearfix">
+					<a href="#" id="CSPhotoSelector_pagePrev" class="CSPhotoSelector_disabled">Previous</a>
+					<a href="#" id="CSPhotoSelector_pageNext">Next</a>
+					<div class="CSPhotoSelector_pageNumberContainer">
+						Page <span id="CSPhotoSelector_pageNumber">1</span> / <span id="CSPhotoSelector_pageNumberTotal">1</span>
+					</div>
+					
+					<a href="#" style="visible: false;" id="CSPhotoSelector_buttonCancel">Cancel</a>
+					<a href="#"  id="CSPhotoSelector_buttonOK">OK</a>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script>
-		<!-- init fb -->
-		var accessToken;
-		window.fbAsyncInit = function() {
-			FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
-			FB.Event.subscribe('auth.login', function() {
-			  window.location.reload();
-			});
-			
+	var accessToken;
 	
-		};
-		FB.login(function (response) {
-				if (response.authResponse) {
-					$("#login-status").html("Logged in");
-				} else {
-					$("#login-status").html("Not logged in");
-				}
-			}, {scope:'user_photos,friends_photos'});
-		(function() {
-			var js = document.createElement('script');
-			js.type = 'text/javascript';
-			js.src = "//connect.facebook.net/en_US/all.js";
-			js.async = true;
-			document.getElementById('fb-root').appendChild(js);
-		}());
-		<!-- finish init -->
+	window.fbAsyncInit = function() {
+		FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
+		FB.Event.subscribe('auth.login', function() {
+		  window.location.reload();
+		});
+	};
+	
+	(function() {
+		var js = document.createElement('script');
+		js.type = 'text/javascript';
+		js.src = "//connect.facebook.net/en_US/all.js";
+		js.async = true;
+    	document.getElementById('fb-root').appendChild(js);
+    }());
 		
 		var selector, logActivity, callbackAlbumSelected, callbackPhotoUnselected, callbackSubmit;
 		var buttonOK = $('#CSPhotoSelector_buttonOK');
@@ -90,7 +125,14 @@
 				var photo;
 				photo = CSPhotoSelector.getPhotoById(photoId);
 				logActivity('<br><strong>Submitted</strong><br> Photo ID: ' + photo.id + '<br>Photo URL: ' + photo.source + '<br>');
-				alert('Selected ID: ' + photoId);
+				$.ajax({
+					type: "POST",
+					url: "/entry/",
+					data: { photo: photo.source },
+					success: function(data) {
+						location.reload();
+					}
+				});	
 			};
 
 
@@ -155,22 +197,8 @@
 	</script>
 	<div id="content">
 		<h1>Category: <span class="italic">{{challenge_title}}</span></h1>
-		<div id="podium">
-			<div id="silver">
-				<div class="ribbon"><h2>2nd place</h2></div>
-				<img src="{{silver_pic}}">
-				<h2 id="silver-name">{{silver_name}}</h2>
-			</div>
-			<div id="champ">
-				<div class="ribbon"><h2>Current Champion</h2></div>
-				<img src="{{gold_pic}}">
-				<h2 id="champ-name">{{gold_name}}</h2>
-			</div>
-			<div id="bronze">
-				<div class="ribbon"><h2>3rd place</h2></div>
-				<img src="{{silver_pic}}">
-				<h2 id="bronze-name">{{bronze_name}}</h2>
-			</div>
+		<div id="photos">
+
 		</div>
 	</div>
 	<div id="background" class="transparent">
@@ -187,50 +215,9 @@
 		</form>
 		<button onclick="picGo()" id="challenge-submit-button">Create</button>
 	</div>
-	<div id="CSPhotoSelector">
-		<div class="CSPhotoSelector_dialog">
-			<a href="#" id="CSPhotoSelector_buttonClose">x</a>
-			<div class="CSPhotoSelector_form">
-				<div class="CSPhotoSelector_header">
-					<p>Choose from Photos</p>
-				</div>
-
-				<div class="CSPhotoSelector_content CSAlbumSelector_wrapper">
-					<p>Browse your albums until you find a picture you want to use</p>
-					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
-						<div class="CSPhotoSelector_selectedCountContainer">Select an album</div>
-					</div>
-					<div class="CSPhotoSelector_photosContainer CSAlbum_container"></div>
-				</div>
-
-				<div class="CSPhotoSelector_content CSPhotoSelector_wrapper">
-					<p>Select a new photo</p>
-					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
-						<div class="CSPhotoSelector_selectedCountContainer"><span class="CSPhotoSelector_selectedPhotoCount">0</span> / <span class="CSPhotoSelector_selectedPhotoCountMax">0</span> photos selected</div>
-						<a href="#" id="CSPhotoSelector_backToAlbums">Back to albums</a>
-					</div>
-					<div class="CSPhotoSelector_photosContainer CSPhoto_container"></div>
-				</div>
-
-				<div id="CSPhotoSelector_loader"></div>
-
-
-				<div class="CSPhotoSelector_footer CSPhotoSelector_clearfix">
-					<a href="#" id="CSPhotoSelector_pagePrev" class="CSPhotoSelector_disabled">Previous</a>
-					<a href="#" id="CSPhotoSelector_pageNext">Next</a>
-					<div class="CSPhotoSelector_pageNumberContainer">
-						Page <span id="CSPhotoSelector_pageNumber">1</span> / <span id="CSPhotoSelector_pageNumberTotal">1</span>
-					</div>
-					
-					<a href="#" style="visible: false;" id="CSPhotoSelector_buttonCancel">Cancel</a>
-					<a href="#"  id="CSPhotoSelector_buttonOK">OK</a>
-				</div>
-			</div>
-		</div>
-	</div>
 </body>
 <footer>
 	<hr>
-<div id="form_authenticate" class="fb-login-button" data-show-faces="false" data-width="1000" data-max-rows="1" data-size="large" data-scope="friends_about_me,friends_likes,friends_relationships,friends_activities,friends_birthday,friends_interests,friends_hometown,friends_location"></div>
+<div id="form_authenticate" class="fb-login-button" data-show-faces="false" data-width="1000" data-max-rows="1" data-size="large" data-scope="friends_about_me,friends_likes,friends_relationships,friends_activities,friends_birthday,friends_interests,friends_hometown,friends_location,user_photos,friends_photos"></div>
 </footer>
 </html>
