@@ -52,7 +52,7 @@ function handle_category_post_request(req, res) {
 
 function handle_category_get_request(req, res) {
     var cid = req.params[1];
-    render_page(req,res,'challenge.html', {});
+    render_page(req,res,'challenge.html', { "cid": cid });
   //});
 }
 
