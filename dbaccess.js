@@ -46,7 +46,7 @@ dbAccessor.prototype.getTopPlacer = function( challenge, callback ) {
 											 {
 													 callback(list);
 											 });
-		});.sort({ upvotes:-1 }).limit(1);
+		}).sort({ upvotes:-1 }).limit(1);
 		callback(top);
 };
 
