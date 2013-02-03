@@ -56,7 +56,7 @@ function handle_challenge_post_request(req, res) {
   {
     render_page(req,res,'/views/challenge.html', {});
   });
-}f
+}
 
 function handle_entry_post_request(req, res) {
 
