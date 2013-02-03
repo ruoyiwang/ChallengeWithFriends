@@ -40,11 +40,9 @@ app.register('.html', mustache);
 function render_page(req, res, pgPath, option) {
   fs.readFile(process.cwd()+pgPath, function (err, data) {
     if (err) throw err;
-    mustache.render(data.toString(), option, function(err, output)
-    {
-      console.log("TETETETETEETET");
+    var output = mustache.render(data.toString(), option);
+      console.log(output);
       res.send(output);
-    });
   });
 }
 
