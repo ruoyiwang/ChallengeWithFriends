@@ -9,6 +9,7 @@ var path = require('path');
 
 var challenge_id = -1;
 
+var dbaccess= new Dbaccess();
 // create an express webserver
 var app = express.createServer(
   express.logger(),
@@ -80,18 +81,19 @@ function handle_post_request(req, res) {
       var POST = qs.parse(body);
       if (req.body.buttonClicked == 'gotoChallenge')
       {
-        render_page(req,res,'challenge', {});
+        render_page(req,res,'challenge.html', {});
       }
       else if (req.body.buttonClicked == 'saveChallenge')
       {
-        
+        render_page(req,res,'index.html', {});
       }
       else if (req.body.buttonClicked == 'saveEntry')
       {
+        render_page(req,res,'challenge.html', {});
       }
       else if (req.body.buttonClicked == 'gotoMain')
       {
-        
+        render_page(req,res,'challenge.html', {});
       }
         res.send();
     });
@@ -114,8 +116,8 @@ app.get('/data', function (req, res) {
 	render_page(req, res, 'data.ejs');
 	console.log("challenge_id: "+challenge_id);
 });
-app.get('/view', function(req, res) { render_page(req, res, 'pg.ejs')});
-app.get('/index', function(req, res) { render_page(req, res, 'index.ejs')});
+app.get('/index', handle_get_request);
+app.post('/index', handle_post_request);
 app.get('/', handle_get_request);
 app.post('/', handle_post_request);
 app.get('*', function(req, res){
