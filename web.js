@@ -78,7 +78,7 @@ app.get('/data', function (req, res) {
 app.get('/index', handle_get_request);
 app.post('/index', handle_index_post_request);
 app.get('/', handle_get_request);
-app.post('/', handle_post_request);
+app.post('/', handle_get_request);
 app.get('*', function(req, res){
 	res.send('404 Sorry! Page is not found :(', 404);
 });
