@@ -37,6 +37,7 @@ app.listen(port, function() {
 
 
 function render_page(req, res, pgPath, option) {
+    console.log(option);
     mu.root = __dirname + '/views';
     var stream = mu.compileAndRender(pgPath, option);
     util.pump(stream, res);
