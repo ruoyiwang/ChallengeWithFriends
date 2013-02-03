@@ -27,11 +27,6 @@
 		FB.Event.subscribe('auth.login', function() {
 		  window.location.reload();
 		});
-		FB.getLoginStatus(function(response) {
-			if (response.status === 'connected') {
-			  	window.location.reload();
-			}
-		});
 	};
 	
 	(function() {
