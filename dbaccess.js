@@ -21,11 +21,11 @@ _db.once('open', function callback () {
 dbAccessor.prototype._db = _db;
 
 dbAccessor.prototype.getChallenges = function(callback) {
-		callback(this._challenges);
+		callback(this._challenges.find());
 };
 
 dbAccessor.prototype.getEntries = function(callback) {
-		callback(this._entries);
+		callback(this._entries.find());
 };
 
 dbAccessor.prototype.getTopPlacer = function( challenge, callback ) {
@@ -65,7 +65,7 @@ dbAccessor.prototype.findEntries = function( query, callback ) {
 };
 
 dbAccessor.prototype.findChallenges = function( query, callback ) {
-		var match = this._entries.find(query);
+		var match = this._challenges.find(query);
 		callback(match);
 };
 
