@@ -52,15 +52,15 @@ function handle_category_post_request(req, res) {
 
 function handle_category_get_request(req, res) {
     var cid = req.params[1];
-    render_page(req,res,'challenge.html', {});
+    render_page(req,res,'challenge.html', { "cid": cid });
   //});
 }
 
 function handle_entry_post_request(req, res) {
 
-  dbaccess.createEntry(null, req.challenge, function( match)
+  dbaccess.createEntry(null, req.challenge, req.photo, function( match)
   {
-    res.redirect('/category');
+    res.redirect('/category/' + req.challenge._id);
   });
 }
 
