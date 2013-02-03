@@ -41,7 +41,7 @@ dbAccessor.prototype.getEntries = function(callback) {
 
 dbAccessor.prototype.getTopPlacer = function( challenge, callback ) {
 		var match = this._challenges.findOne({ title: challenge });
-		var top = match.entries.find({}).sort({ upvotes:-1 }).limit(1);
+		var top = match.entries.find().sort({ upvotes:-1 }).limit(1);
 		callback(top);
 };
 
