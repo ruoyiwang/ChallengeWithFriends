@@ -103,6 +103,8 @@ function handle_request(req, res) {
       var POST = qs.parse(body);
       
     });
+   }
+ }
 
 function handle_facebook_request(req, res) {
 
