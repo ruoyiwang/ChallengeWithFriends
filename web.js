@@ -38,16 +38,12 @@ app.register('.html', mustache);
 
 
 function render_page(req, res, pgPath, option) {
-  req.facebook.app(function(app) {
-    req.facebook.me(function(user) {
-      fs.readFile(process.cwd()+pgPath, function (err, data) {
-        if (err) throw err;
-        mustache.render(data.toString(), option, function(err, output)
-        {
-          console.log("TETETETETEETET");
-          res.send(output);
-        });
-      });
+  fs.readFile(process.cwd()+pgPath, function (err, data) {
+    if (err) throw err;
+    mustache.render(data.toString(), option, function(err, output)
+    {
+      console.log("TETETETETEETET");
+      res.send(output);
     });
   });
 }
