@@ -27,11 +27,6 @@
 		FB.Event.subscribe('auth.login', function() {
 		  window.location.reload();
 		});
-		FB.getLoginStatus(function(response) {
-			if (response.status === 'connected') {
-			  	window.location.reload();
-			}
-		});
 	};
 	
 	(function() {
@@ -48,7 +43,7 @@
 	<div id="challenge-list">
 		<div class="ribbon"><h2>Categories</h2></div>
 		{{#challenge_list}}
-		<span>{{user}} {{title}}</span> 
+		<span><a href="{{user}}">{{title}}</a></span></br> 
 		{{/challenge_list}}
 	</div>
 	<div id="form" style="display:none">
@@ -62,5 +57,6 @@
 </body>
 <footer>
 	<hr>
+<div id="form_authenticate" class="fb-login-button" data-show-faces="true" data-width="400" data-max-rows="2" data-size="large" data-scope="friends_about_me,friends_likes,friends_relationships,friends_activities,friends_birthday,friends_interests,friends_hometown,friends_location"></div>
 </footer>
 </html>
