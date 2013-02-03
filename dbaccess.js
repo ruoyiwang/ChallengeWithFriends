@@ -24,8 +24,8 @@ dbAccessor.prototype.getChallenges = function(callback) {
 	this._challenges.find({},function(err,cursor){
 		cursor.toArray(function(err,list)
 		{
-			callback(list);
 			console.log(list);
+			callback(list);
 		});
 	});
 };
