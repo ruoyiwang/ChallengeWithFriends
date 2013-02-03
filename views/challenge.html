@@ -7,6 +7,7 @@
 	<link href="static/normalize.css" rel="stylesheet" type="text/css">
 	<link href="static/sofab.css" rel="stylesheet" type="text/css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	<script type="text/javascript" src="//connect.facebook.net/en_US/all.js"></script>
 	<script src="static/jayz.js"></script>
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,22 +21,137 @@
 <body>
 	<div id="fb-root"></div>
 	<script>
-	var accessToken;
+		<!-- init fb -->
+		var accessToken;
+		window.fbAsyncInit = function() {
+			FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
+			FB.Event.subscribe('auth.login', function() {
+			  window.location.reload();
+			});
+			
 	
-	window.fbAsyncInit = function() {
-		FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
-		FB.Event.subscribe('auth.login', function() {
-		  window.location.reload();
+		};
+		FB.login(function (response) {
+				if (response.authResponse) {
+					$("#login-status").html("Logged in");
+				} else {
+					$("#login-status").html("Not logged in");
+				}
+			}, {scope:'user_photos,friends_photos'});
+		(function() {
+			var js = document.createElement('script');
+			js.type = 'text/javascript';
+			js.src = "//connect.facebook.net/en_US/all.js";
+			js.async = true;
+			document.getElementById('fb-root').appendChild(js);
+		}());
+		<!-- finish init -->
+		
+		var selector, logActivity, callbackAlbumSelected, callbackPhotoUnselected, callbackSubmit;
+		var buttonOK = $('#CSPhotoSelector_buttonOK');
+		var o = this;
+		
+		
+		/* --------------------------------------------------------------------
+		 * Photo selector functions
+		 * ----------------------------------------------------------------- */
+		
+		fbphotoSelect = function(id) {
+			// if no user/friend id is sent, default to current user
+			if (!id) id = 'me';
+			
+			callbackAlbumSelected = function(albumId) {
+				var album, name;
+				album = CSPhotoSelector.getAlbumById(albumId);
+				// show album photos
+				selector.showPhotoSelector(null, album.id);
+			};
+
+			callbackAlbumUnselected = function(albumId) {
+				var album, name;
+				album = CSPhotoSelector.getAlbumById(albumId);
+			};
+
+			callbackPhotoSelected = function(photoId) {
+				var photo;
+				photo = CSPhotoSelector.getPhotoById(photoId);
+				buttonOK.show();
+				logActivity('Selected ID: ' + photo.id);
+				callbackSubmit(photoId);
+			};
+
+			callbackPhotoUnselected = function(photoId) {
+				var photo;
+				album = CSPhotoSelector.getPhotoById(photoId);
+				buttonOK.hide();
+			};
+
+			callbackSubmit = function(photoId) {
+				var photo;
+				photo = CSPhotoSelector.getPhotoById(photoId);
+				logActivity('<br><strong>Submitted</strong><br> Photo ID: ' + photo.id + '<br>Photo URL: ' + photo.source + '<br>');
+				alert('Selected ID: ' + photoId);
+			};
+
+
+			// Initialise the Photo Selector with options that will apply to all instances
+			CSPhotoSelector.init({debug: true});
+
+			// Create Photo Selector instances
+			selector = CSPhotoSelector.newInstance({
+				callbackAlbumSelected	: callbackAlbumSelected,
+				callbackAlbumUnselected	: callbackAlbumUnselected,
+				callbackPhotoSelected	: callbackPhotoSelected,
+				callbackPhotoUnselected	: callbackPhotoUnselected,
+				callbackSubmit			: callbackSubmit,
+				maxSelection			: 1,
+				albumsPerPage			: 6,
+				photosPerPage			: 200,
+				autoDeselection			: true
+			});
+
+			// reset and show album selector
+			selector.reset();
+			selector.showAlbumSelector(id);
+		}
+		
+		
+		/* --------------------------------------------------------------------
+		 * Click events
+		 * ----------------------------------------------------------------- */
+		
+		$("#btnLogin").click(function (e) {
+			e.preventDefault();
+			FB.login(function (response) {
+				if (response.authResponse) {
+					$("#login-status").html("Logged in");
+				} else {
+					$("#login-status").html("Not logged in");
+				}
+			}, {scope:'user_photos,friends_photos'});
 		});
-	};
-	
-	(function() {
-		var js = document.createElement('script');
-		js.type = 'text/javascript';
-		js.src = "//connect.facebook.net/en_US/all.js";
-		js.async = true;
-    	document.getElementById('fb-root').appendChild(js);
-    }());
+		
+		$("#btnLogout").click(function (e) {
+			e.preventDefault();
+			FB.logout();
+			$("#login-status").html("Not logged in");
+		});
+		
+		$(".photoSelect").click(function (e) {
+			e.preventDefault();
+			id = null;
+			if ( $(this).attr('data-id') ) id = $(this).attr('data-id');
+				fbphotoSelect(id);
+			
+		});
+
+		logActivity = function (message) {
+			$("#results").append('<div>' + message + '</div>');
+		};
+		
+		function picGo() {
+			fbphotoSelect('me');
+		}
 	</script>
 	<div id="content">
 		<h1>Category: <span class="italic">{{challenge_title}}</span></h1>
@@ -69,7 +185,48 @@
 			<label>Category</label></br>
 			<input id="challenge-input"></br>
 		</form>
-		<button id="challenge-submit-button">Create</button>
+		<button onclick="picGo()" id="challenge-submit-button">Create</button>
+	</div>
+	<div id="CSPhotoSelector">
+		<div class="CSPhotoSelector_dialog">
+			<a href="#" id="CSPhotoSelector_buttonClose">x</a>
+			<div class="CSPhotoSelector_form">
+				<div class="CSPhotoSelector_header">
+					<p>Choose from Photos</p>
+				</div>
+
+				<div class="CSPhotoSelector_content CSAlbumSelector_wrapper">
+					<p>Browse your albums until you find a picture you want to use</p>
+					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+						<div class="CSPhotoSelector_selectedCountContainer">Select an album</div>
+					</div>
+					<div class="CSPhotoSelector_photosContainer CSAlbum_container"></div>
+				</div>
+
+				<div class="CSPhotoSelector_content CSPhotoSelector_wrapper">
+					<p>Select a new photo</p>
+					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+						<div class="CSPhotoSelector_selectedCountContainer"><span class="CSPhotoSelector_selectedPhotoCount">0</span> / <span class="CSPhotoSelector_selectedPhotoCountMax">0</span> photos selected</div>
+						<a href="#" id="CSPhotoSelector_backToAlbums">Back to albums</a>
+					</div>
+					<div class="CSPhotoSelector_photosContainer CSPhoto_container"></div>
+				</div>
+
+				<div id="CSPhotoSelector_loader"></div>
+
+
+				<div class="CSPhotoSelector_footer CSPhotoSelector_clearfix">
+					<a href="#" id="CSPhotoSelector_pagePrev" class="CSPhotoSelector_disabled">Previous</a>
+					<a href="#" id="CSPhotoSelector_pageNext">Next</a>
+					<div class="CSPhotoSelector_pageNumberContainer">
+						Page <span id="CSPhotoSelector_pageNumber">1</span> / <span id="CSPhotoSelector_pageNumberTotal">1</span>
+					</div>
+					
+					<a href="#" style="visible: false;" id="CSPhotoSelector_buttonCancel">Cancel</a>
+					<a href="#"  id="CSPhotoSelector_buttonOK">OK</a>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 <footer>
