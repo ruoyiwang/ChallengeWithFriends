@@ -2,7 +2,6 @@ var async    = require('async');
 var express  = require('express');
 var events   = require('events');
 var util     = require('util');
-var mongoose = require('mongoose');
 var Dbaccess = require('./dbaccess').dbAccessor;
 var qs       = require('querystring');
 var url = require('url');
