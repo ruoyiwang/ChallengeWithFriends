@@ -44,7 +44,7 @@ function render_page(req, res, pgPath, option) {
 
 function handle_index_post_request(req, res) {
 
-  render_page(req,res,'challenge.html', {});
+  render_page(req,res,'challenge', {});
   /*dbaccess.createChallenge(creator, inTitle, inType, inMinmax, function(match)
   {
     render_page(req,res,'challenge.html', {});
@@ -53,7 +53,7 @@ function handle_index_post_request(req, res) {
 
 function handle_get_request(req, res) {
 
-  render_page(req, res, 'index.html', {});
+  render_page(req, res, 'index', {});
   /*if (req.method == "GET")
   {
     dbaccess.insert(null, function(match)
