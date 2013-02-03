@@ -59,9 +59,9 @@ function handle_category_set_request(req, res) {
 
 function handle_entry_post_request(req, res) {
 
-  dbaccess.createEntry(null, req.challenge, function( match)
+  dbaccess.createEntry(null, req.challenge, req.photo, function( match)
   {
-    res.redirect('/category');
+    res.redirect('/category/' + req.challenge._id);
   });
 }
 

@@ -95,8 +95,8 @@ dbAccessor.prototype.getEntriesByChallenge = function( inChallenge, callback ) {
 		});
 };
 
-dbAccessor.prototype.createEntry = function( creator, inTitle, inChallenge, inContent, callback ) {
-		this._entries.save({ user: creator, title: inTitle, challenge: inChallenge, metric: 0, content: inContent }, { safe: true }, callback);
+dbAccessor.prototype.createEntry = function( creator, inChallenge, inContent, callback ) {
+		this._entries.save({ user: creator, challenge: inChallenge, metric: 0, content: inContent }, { safe: true }, callback);
 };
 
 dbAccessor.prototype.upvote = function( entry, callback ) {
