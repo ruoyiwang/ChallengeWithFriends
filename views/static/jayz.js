@@ -21,14 +21,6 @@ $(document).ready(function() {
 	});
 
 	$("#challenge-button").click(function () {
-		var photoid = picGo();
-		$.ajax({
-			type: "POST",
-			url: "/entry/",
-			data: { photo: photoid },
-			success: function(data) {
-				location.reload();
-			}
-		});	
+		picGo();
 	});
 });

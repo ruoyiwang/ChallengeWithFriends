@@ -125,7 +125,14 @@
 				var photo;
 				photo = CSPhotoSelector.getPhotoById(photoId);
 				logActivity('<br><strong>Submitted</strong><br> Photo ID: ' + photo.id + '<br>Photo URL: ' + photo.source + '<br>');
-				alert('Selected ID: ' + photoId);
+				$.ajax({
+					type: "POST",
+					url: "/entry/",
+					data: { photo: photo.source },
+					success: function(data) {
+						location.reload();
+					}
+				});	
 			};
 
 
