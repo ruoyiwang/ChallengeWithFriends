@@ -4,6 +4,7 @@ var events   = require('events');
 var util     = require('util');
 var Dbaccess = require('./dbaccess').dbAccessor;
 var qs       = require('querystring');
+var sys      = require('sys');
 var mustache = require('mustache');
 var url = require('url');
 var path = require('path');
@@ -38,8 +39,8 @@ function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
       console.log(pgPath);
-      var html = mustache.render(pgPath,option);
-      res.render(html);
+      var html = mustache.to_html(pgPath,option);
+      sys.put(html);
     });
   });
 }
