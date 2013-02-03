@@ -22,13 +22,22 @@ dbAccessor.prototype._db = _db;
 
 dbAccessor.prototype.getChallenges = function(callback) {
 	var cursor = this._challenges.find({},function(err,cursor){
-		callback(cursor);
-		console.log(cursor);
+		var list = [];
+		cursor.foreach(function(item){
+			list.append(item);
+		});
+		callback(list);
 	});
 };
 
 dbAccessor.prototype.getEntries = function(callback) {
-		callback(this._entries.find());
+	var cursor = this._entries.find({},function(err,cursor){
+		var list = [];
+		cursor.foreach(function(item){
+			list.append(item);
+		});
+		callback(list);
+	});
 };
 
 dbAccessor.prototype.getTopPlacer = function( challenge, callback ) {
