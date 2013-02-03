@@ -60,6 +60,7 @@ function handle_category_post_request(req, res) {
 function handle_category_set_request(req, res) {
   //dbaccess.createChallenge(null, req.category, function(match)
   //{
+    console.log("test3");
     render_page(req,res,'/views/challenge.html', {});
   //});
 }
@@ -76,6 +77,7 @@ function handle_get_request(req, res) {
 
   dbaccess.findChallenges(null, function (match)
   {
+    console.log(match);
     render_page(req, res, '/views/index.html', {challenge_list:match});    
   });
 
