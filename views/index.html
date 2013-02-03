@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>BEATit</title>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:700,300|Oswald:400,300' rel='stylesheet' type='text/css'>
+	<link href="static/normalize.css" rel="stylesheet" type="text/css">
+	<link href="static/sofab.css" rel="stylesheet" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<header>
+	<h1>Challenge <span class="italic">with</span> Friends</h1>
+	<button id="submit-challenge-button">Create challenge</button>
+	<hr>
+</header>
+<body>
+	<div id="fb-root"></div>
+	<script>
+	var accessToken;
+	
+	window.fbAsyncInit = function() {
+		FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
+		FB.Event.subscribe('auth.login', function() {
+		  window.location.reload();
+		});
+		FB.getLoginStatus(function(response) {
+			if (response.status === 'connected') {
+			  	window.location.reload();
+			}
+		});
+	};
+	
+	(function() {
+		var js = document.createElement('script');
+		js.type = 'text/javascript';
+		js.src = "//connect.facebook.net/en_US/all.js";
+		js.async = true;
+    	document.getElementById('fb-root').appendChild(js);
+    }());
+	</script>
+	<div id="background">
+		<img src="http://www.pue.itesm.mx/comunicacion/ProgramasInternacionales/img/Paises/32/Universidades/16/waterloo.jpg">
+	</div>
+	<div id="form" style="display:none">
+		<form>
+			<label>Challenge</label></br>
+			<input id="challenge-input"></br>
+			<label>Unit</label></br>
+			<input id="unit-input"></br>
+			<input type="radio" name="quant" value="quantitative"> Quantitative
+			<input type="radio" name="quant" value="qualitative"> Qualitative</br>
+			<input type="radio" name="order" value="asc"> Ascending
+			<input type="radio" name="order" value="desc"> Descending</br>
+		</form>
+		<button id="challenge-submit-button">Create</button>
+	</div>
+</body>
+<footer>
+	<hr>
+</footer>
+</html>
