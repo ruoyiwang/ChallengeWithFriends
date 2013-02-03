@@ -50,7 +50,7 @@ function render_page(req, res, pgPath, option) {
   });
 }
 
-function handle_challenge_post_request(req, res) {
+function handle_catagory_post_request(req, res) {
 
   dbaccess.createChallenge(null, req.data.challenge, req.data.unit, req.data.order, function(match)
   {
