@@ -51,11 +51,8 @@ function render_page(req, res, pgPath, option) {
 }
 
 function handle_category_post_request(req, res) {
-  dbaccess.createChallenge(null, req.data.challenge, function(match)
+  dbaccess.createChallenge(null, req.data.category, function(match)
   {
-  console.log(req.data.challenge);
-  console.log(req.body.challenge);
-  console.log(req.body.data.challenge);
     render_page(req,res,'/views/challenge.html', {});
   });
 }
