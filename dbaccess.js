@@ -22,20 +22,14 @@ dbAccessor.prototype._db = _db;
 
 dbAccessor.prototype.getChallenges = function(callback) {
 	this._challenges.find({},function(err,cursor){
-		var list = [];
-		cursor.forEach(function(item){
-			list.append(item);
-		});
+		var list = cursor.toArray();
 		callback(list);
 	});
 };
 
 dbAccessor.prototype.getEntries = function(callback) {
 	this._entries.find({},function(err,cursor){
-		var list = [];
-		cursor.forEach(function(item){
-			list.append(item);
-		});
+		var list = cursor.toArray();
 		callback(list);
 	});
 };
