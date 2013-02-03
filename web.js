@@ -42,8 +42,11 @@ function render_page(req, res, pgPath, option) {
     req.facebook.me(function(user) {
       fs.readFile(process.cwd()+pgPath, function (err, data) {
         if (err) throw err;
-        var output = mustache.render(data.toString(), option);
-        res.send(output);
+        mustache.render(data.toString(), option, function(err, output)
+        {
+          res.send(output);
+
+        });
       });
     });
   });
@@ -77,13 +80,14 @@ function handle_get_request(req, res) {
   {
     console.log(match);
 
-    render_page(req, res, '/views/index.html', {'challenge_list':match});    
+    render_page(req, res, '/views/index.html', {"challenge_list":match});    
   });
 
 }
 
 function handle_index_get_request(req, res) {
-  dbaccess.getEntriesByChallenge(req.data.challenge, function(match) {
+  dbaccess.getEntriesByChallenge(req.data.challenge, function(match) 
+  {
     render_page(req, res, '/views/challenge.html', {});
   });
 }
