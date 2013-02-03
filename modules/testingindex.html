@@ -2,33 +2,8 @@
 <head>
 <script type="text/javascript" src="//connect.facebook.net/en_US/all.js"></script>
 <script type="text/javascript" src="fb.js"></script>
-<script type="text/javascript" src="fb.js"></script>
-
 <div id="fb-root"></div>
 
-<script>
-var accessToken;
-
-window.fbAsyncInit = function() {
-	FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
-	FB.Event.subscribe('auth.login', function() {
-	  window.location.reload();
-	});
-	FB.getLoginStatus(function(response) {
-		if (response.status === 'connected') {
-			window.location.reload();
-		}
-	});
-};
-
-(function() {
-	var js = document.createElement('script');
-	js.type = 'text/javascript';
-	js.src = "//connect.facebook.net/en_US/all.js";
-	js.async = true;
-	document.getElementById('fb-root').appendChild(js);
-}());
-</script>
 <script>
 var did = function displayid(id){
 	document.getElementById("ta").value = id;

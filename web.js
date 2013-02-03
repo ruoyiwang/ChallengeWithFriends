@@ -2,47 +2,19 @@ var async    = require('async');
 var express  = require('express');
 var events   = require('events');
 var util     = require('util');
-var mongoose = require('mongoose');
 var Dbaccess = require('./dbaccess').dbAccessor;
 var qs       = require('querystring');
+var mustache = require('mustache');
 var url = require('url');
 var path = require('path');
+var fs = require('fs');
 
 var challenge_id = -1;
 
-Eventer = function(){
-  events.EventEmitter.call(this);
-  this.createChallenge = function( creator, inTitle, inType, inMinmax ){
-    this.emit('createChallenge',  creator, inTitle, inType, inMinmax );
-  }
-
-  this.createEntry = function(creator, inTitle, inChallenge, inMetric, inContent ){
-    this.emit('createEntry', creator, inTitle, inChallenge, inMetric, inContent );
-  }
- };
-
-util.inherits(Eventer, events.EventEmitter);
-
-Listener = function(){
-  this.createChallengeHandler =  function( creator, inTitle, inType, inMinmax ){
-    //console.log('works');
-    dbaccess.createChallenge( creator, inTitle, inType, inMinmax );
-  },
-  this.createEntryHandler = function(creator, inTitle, inChallenge, inMetric, inContent ){
-    dbaccess.createEntry(userId, Value, challengeName);
-  }
-};
-
-var eventer = new Eventer();
-var listener = new Listener(eventer);
-
-eventer.on('createChallenge',listener.createChallengeHandler);
-eventer.on('createEntry',listener.createEntryHandler);
-
+var dbaccess= new Dbaccess();
 // create an express webserver
 var app = express.createServer(
   express.logger(),
-  express.static(__dirname + '/public'),
   express.bodyParser(),
   express.cookieParser(),
   // set this to a secret value to encrypt session cookies
@@ -54,98 +26,45 @@ var app = express.createServer(
   })
 );
 
+app.use('/static',express.static(__dirname + '/views/static'));
+app.use('/webfonts',express.static(__dirname + '/views/webfonts'));
 // listen to the PORT given to us in the environment
 var port = process.env.PORT || 3000;
 
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
+app.register('.html', mustache);
 
-app.dynamicHelpers({
-  'host': function(req, res) {
-    return req.headers['host'];
-  },
-  'scheme': function(req, res) {
-    req.headers['x-forwarded-proto'] || 'http'
-  },
-  'url': function(req, res) {
-    return function(path) {
-      return app.dynamicViewHelpers.scheme(req, res) + app.dynamicViewHelpers.url_no_scheme(path);
-    }
-  },
-  'url_no_scheme': function(req, res) {
-    return function(path) {
-      return '://' + app.dynamicViewHelpers.host(req, res) + path;
-    }
-  },
-});
 
-function render_page(req, res, pgPath) {
+function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
-      res.render(pgPath, {
-        layout:    false,
-        req:       req,
-        app:       app,
-        user:      user
+      fs.readFile(process.cwd()+pgPath, function (err, data) {
+        console.log('Current directory: ' + process.cwd());
+        if (err) throw err;
+        var output = mustache.render(data.toString(), option);
+        res.send(output);
       });
     });
   });
 }
 
-function handle_request(req, res) {
-  if (req.method == 'POST') {
-    var body = '';
-    req.on('data', function (data) {
-        body += data;
-    });
-    req.on('end', function () {
-      var POST = qs.parse(body);
-      
-    });
+function handle_index_post_request(req, res) {
 
-function handle_facebook_request(req, res) {
+  dbaccess.createChallenge(creator, inTitle, inType, inMinmax, function(match)
+  {
+    render_page(req,res,'/views/challenge.html', {});
+  });
+}
 
-  // if the user is logged in
-  if (req.facebook.token) {
+function handle_get_request(req, res) {
 
-    async.parallel([
-      function(cb) {
-        // query 4 friends and send them to the socket for this socket id
-        req.facebook.get('/me/friends', { limit: 4 }, function(friends) {
-          req.friends = friends;
-          cb();
-        });
-      },
-      function(cb) {
-        // query 16 photos and send them to the socket for this socket id
-        req.facebook.get('/me/photos', { limit: 16 }, function(photos) {
-          req.photos = photos;
-          cb();
-        });
-      },
-      function(cb) {
-        // query 4 likes and send them to the socket for this socket id
-        req.facebook.get('/me/likes', { limit: 4 }, function(likes) {
-          req.likes = likes;
-          cb();
-        });
-      },
-      function(cb) {
-        // use fql to get a list of my friends that are using this app
-        req.facebook.fql('SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1', function(result) {
-          req.friends_using_app = result;
-          cb();
-        });
-      }
-    ], function() {
-      render_page(req, res, 'index.ejs');
-    });
+  dbaccess.findChallenges(null, function (match)
+  {
+    render_page(req, res, '/views/index.html', match);    
+  });
 
-  } else {
-    render_page(req, res, 'index.ejs');
-  }
-  render_page(req, res);
 }
 function print_id() {
 	console.log(challenge_id);
@@ -161,10 +80,10 @@ app.get('/data', function (req, res) {
 	render_page(req, res, 'data.ejs');
 	console.log("challenge_id: "+challenge_id);
 });
-app.get('/view', function(req, res) { render_page(req, res, 'pg.ejs')});
-app.get('/index', function(req, res) { render_page(req, res, 'index.ejs')});
-app.get('/', handle_facebook_request);
-app.post('/', handle_facebook_request);
+app.get('/index', handle_get_request);
+app.post('/index', handle_index_post_request);
+app.get('/', handle_get_request);
+app.post('/', handle_get_request);
 app.get('*', function(req, res){
 	res.send('404 Sorry! Page is not found :(', 404);
 });

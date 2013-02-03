@@ -54,6 +54,11 @@ dbAccessor.prototype.getEntriesByCreator = function( creator, callback ) {
 		callback(match);
 };
 
+dbAccessor.prototype.getEntriesByChallenge = function( inChallenge, callback ) {
+		var match = this._entries.find({ challenge: inChallenge });
+		callback(match);
+};
+
 dbAccessor.prototype.findEntries = function( query, callback ) {
 		var match = this._entries.find(query);
 		callback(match);
