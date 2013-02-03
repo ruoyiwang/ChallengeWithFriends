@@ -25,7 +25,7 @@ dbAccessor.prototype.getChallenges = function(callback) {
 		cursor.toArray(function(err,list)
 		{
 			callback(list);
-
+			console.log(list);
 		});
 	});
 };
@@ -35,7 +35,6 @@ dbAccessor.prototype.getEntries = function(callback) {
 		cursor.toArray(function(err,list)
 		{
 			callback(list);
-
 		});
 	});
 };
