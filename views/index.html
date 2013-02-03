@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8"/>
-	<title>BEATit</title>
+	<title>Photocracy</title>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:700,300|Oswald:400,300' rel='stylesheet' type='text/css'>
 	<link href="static/normalize.css" rel="stylesheet" type="text/css">
 	<link href="static/sofab.css" rel="stylesheet" type="text/css">
@@ -13,8 +13,8 @@
 	<![endif]-->
 </head>
 <header>
-	<h1>Challenge <span class="italic">with</span> Friends</h1>
-	<button id="submit-challenge-button">Create challenge</button>
+	<h1>Photocracy</h1>
+	<button id="submit-challenge-button">Create category</button>
 	<hr>
 </header>
 <body>
@@ -46,7 +46,7 @@
 		<img src="http://www.pue.itesm.mx/comunicacion/ProgramasInternacionales/img/Paises/32/Universidades/16/waterloo.jpg">
 	</div>
 	<div id="challenge-list">
-		<div class="ribbon"><h2>Challenges</h2></div>
+		<div class="ribbon"><h2>Categories</h2></div>
 		{{#challenge_list}}
 		<span>{{user}} {{title}} {{type}} {{minmax}}</span> 
 		{{/challenge_list}}
@@ -54,14 +54,8 @@
 	<div id="form" style="display:none">
 		<div class="ribbon"><h2>Create Challenge</h2></div>
 		<form>
-			<label>Challenge</label></br>
+			<label>Category</label></br>
 			<input id="challenge-input"></br>
-			<label>Unit</label></br>
-			<input id="unit-input"></br>
-			<input type="radio" name="quant" value="quantitative"> Quantitative
-			<input type="radio" name="quant" value="qualitative"> Qualitative</br>
-			<input type="radio" name="order" value="asc"> Ascending
-			<input type="radio" name="order" value="desc"> Descending</br>
 		</form>
 		<button id="challenge-submit-button">Create</button>
 	</div>
