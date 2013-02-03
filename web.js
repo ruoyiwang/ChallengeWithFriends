@@ -91,7 +91,7 @@ app.get('/data', function (req, res) {
 	render_page(req, res, 'data.ejs');
 	console.log("challenge_id: "+challenge_id);
 });
-app.get('/(category)\/(.+)/', handle_category_get_request);
+app.get('/category/(.+)/', handle_category_get_request);
 app.post('/category', handle_category_post_request);
 app.post('/entry', handle_entry_post_request);
 app.get('/index', handle_index_get_request);
