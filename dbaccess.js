@@ -21,9 +21,10 @@ _db.once('open', function callback () {
 dbAccessor.prototype._db = _db;
 
 dbAccessor.prototype.getChallenges = function(callback) {
-		var cursor = this._challenges.find();
-		console.log(cursor);
+	var cursor = this._challenges.find({},function(){
 		callback(cursor);
+		console.log(cursor);
+	});
 };
 
 dbAccessor.prototype.getEntries = function(callback) {
