@@ -52,7 +52,6 @@ function render_page(req, res, pgPath, option) {
 function handle_category_post_request(req, res) {
   dbaccess.createChallenge(null, req.body.category, function(match)
   {
-    console.log( req.body);
     res.redirect('/category');
   });
 }
@@ -66,7 +65,7 @@ function handle_category_set_request(req, res) {
 
 function handle_entry_post_request(req, res) {
 
-  dbaccess.createEntry(null, req.challenge, function(match)
+  dbaccess.createEntry(null, req.challenge, function(err, match)
   {
     res.redirect('/category');
   });
