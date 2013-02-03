@@ -39,7 +39,8 @@ app.register('.html', mustache);
 function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
-      fs.readFile(pgPath, function (err, data) {
+      fs.readFile(app.set('views')+pgPath, function (err, data) {
+        console.log(app.set('views')+pgPath);
         if (err) throw err;
         var output = mustache.render(data.toString(), option);
         res.send(output);
