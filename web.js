@@ -4,7 +4,6 @@ var events   = require('events');
 var util     = require('util');
 var Dbaccess = require('./dbaccess').dbAccessor;
 var qs       = require('querystring');
-var sys      = require('sys');
 var mustache = require('mustache');
 var url = require('url');
 var path = require('path');
@@ -35,16 +34,15 @@ app.listen(port, function() {
 });
 app.register('.html', mustache);
 
-function loadTemplate(template) {
-    return this.fs.readFileSync(app.set('views') + template+ '.html')+ '';
-}
 
 function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
-      console.log(pgPath);
-      var html = mustache.to_html(loadTemplate(pgPath),option);
-      res.send(html);
+      fs.readFile(pgPath, function (err, data) {
+        if (err) throw err;
+        var output = Mustache.render(data.toString(), object_to_render);
+        res.send(output);
+      });
     });
   });
 }
