@@ -35,11 +35,15 @@ app.listen(port, function() {
 });
 app.register('.html', mustache);
 
+unction loadTemplate(template) {
+    return this.fs.readFileSync(app.set('views') + template+ '.html')+ '';
+}
+
 function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
       console.log(pgPath);
-      var html = mustache.to_html(pgPath,option);
+      var html = mustache.to_html(loadTemplate(pgPath),option);
       res.send(html);
     });
   });
