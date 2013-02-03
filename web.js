@@ -4,6 +4,7 @@ var events   = require('events');
 var util     = require('util');
 var Dbaccess = require('./dbaccess').dbAccessor;
 var qs       = require('querystring');
+var mustache = require('mustache');
 var url = require('url');
 var path = require('path');
 
@@ -31,7 +32,7 @@ var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-app.register('.html', require('mustache'));
+app.register('.html', mustache);
 
 function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
