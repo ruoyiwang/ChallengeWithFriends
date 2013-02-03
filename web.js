@@ -80,7 +80,7 @@ function handle_get_request(req, res) {
   {
     console.log(match);
 
-    render_page(req, res, '/views/index.html', {'challenge_list':match});    
+    render_page(req, res, '/views/index.html', {"challenge_list":match});    
   });
 
 }
