@@ -78,6 +78,7 @@ dbAccessor.prototype.upvote = function( entry, callback ) {
 };
 
 dbAccessor.prototype.createChallenge = function( creator, inTitle, callback ) {
+		console.log("TEST2")
 		this._challenges.save({ user: creator, title: inTitle }, { safe: true }, callback);
 };
 
