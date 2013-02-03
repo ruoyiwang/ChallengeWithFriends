@@ -21,11 +21,11 @@ _db.once('open', function callback () {
 dbAccessor.prototype._db = _db;
 
 dbAccessor.prototype.getChallenges = function(callback) {
-		callback(this._challenges.find());
+		callback(this._challenges.find().all());
 };
 
 dbAccessor.prototype.getEntries = function(callback) {
-		callback(this._entries.find());
+		callback(this._entries.find().all());
 };
 
 dbAccessor.prototype.getTopPlacer = function( challenge, callback ) {
@@ -78,7 +78,7 @@ dbAccessor.prototype.upvote = function( entry, callback ) {
 };
 
 dbAccessor.prototype.createChallenge = function( creator, inTitle, callback ) {
-		console.log("TEST2")
+		console.log(inTitle)
 		this._challenges.save({ user: creator, title: inTitle }, { safe: true }, callback);
 };
 
