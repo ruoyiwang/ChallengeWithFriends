@@ -15,7 +15,6 @@ var dbaccess= new Dbaccess();
 // create an express webserver
 var app = express.createServer(
   express.logger(),
-  express.static(__dirname + '/views/static'),
   express.bodyParser(),
   express.cookieParser(),
   // set this to a secret value to encrypt session cookies
@@ -27,6 +26,8 @@ var app = express.createServer(
   })
 );
 
+app.use('/static',express.static(__dirname + '/views/static'));
+app.use('/webfonts',express.static(__dirname + '/views/webfonts'));
 // listen to the PORT given to us in the environment
 var port = process.env.PORT || 3000;
 
