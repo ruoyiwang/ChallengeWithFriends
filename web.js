@@ -33,7 +33,7 @@ app.listen(port, function() {
 });
 
 
-function render_page(req, res, pgPath) {
+function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
       res.render(pgPath, option);
