@@ -1,0 +1,33 @@
+<html>
+<head>
+<script type="text/javascript" src="//connect.facebook.net/en_US/all.js"></script>
+<script type="text/javascript" src="fb.js"></script>
+<div id="fb-root"></div>
+
+<script>
+var did = function displayid(id){
+	document.getElementById("ta").value = id;
+}
+
+function get_id(callback){
+	callback("lol");
+}
+
+function getroysid()
+{
+	get_id(did)
+}
+</script>
+</head>
+
+<body>
+	<div>
+		<button id="btn_roys_id" onclick="getroysid()">See Roy's user id</button>
+	</div>
+	<div>
+		<textarea id="ta"rows="4" cols="50">
+			At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies.
+		</textarea> 
+	</div>
+</body>
+</html>
