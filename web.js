@@ -50,26 +50,34 @@ function render_page(req, res, pgPath, option) {
   });
 }
 
-function handle_catagory_post_request(req, res) {
-
-  dbaccess.createChallenge(null, req.data.challenge, function(match)
+function handle_category_post_request(req, res) {
+  dbaccess.createChallenge(null, req.category, function(match)
   {
-    render_page(req,res,'/views/challenge.html', {});
+    res.redirect('/category');
   });
+}
+
+function handle_category_set_request(req, res) {
+  //dbaccess.createChallenge(null, req.category, function(match)
+  //{
+    console.log("test3");
+    render_page(req,res,'/views/challenge.html', {});
+  //});
 }
 
 function handle_entry_post_request(req, res) {
 
-  dbaccess.createEntry(null, req.data.challenge, req.data.unit, req.data.order, function(match)
+  dbaccess.createEntry(null, req.challenge, function(match)
   {
-    render_page(req,res,'/views/challenge.html', {});
+    res.redirect('/category');
   });
 }
 
 function handle_get_request(req, res) {
 
-  dbaccess.findChallenges(null, function (match)
+  dbaccess.getChallenges(function (match)
   {
+    console.log(match);
     render_page(req, res, '/views/index.html', {challenge_list:match});    
   });
 
@@ -90,7 +98,8 @@ app.get('/data', function (req, res) {
 	render_page(req, res, 'data.ejs');
 	console.log("challenge_id: "+challenge_id);
 });
-app.post('/catagory', handle_catagory_post_request);
+app.set('/category', handle_category_set_request);
+app.post('/category', handle_category_post_request);
 app.post('/entry', handle_entry_post_request);
 app.get('/index', handle_index_get_request);
 app.post('/index', handle_entry_post_request);
