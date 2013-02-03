@@ -61,39 +61,15 @@ app.listen(port, function() {
   console.log("Listening on " + port);
 });
 
-app.dynamicHelpers({
-  'host': function(req, res) {
-    return req.headers['host'];
-  },
-  'scheme': function(req, res) {
-    req.headers['x-forwarded-proto'] || 'http'
-  },
-  'url': function(req, res) {
-    return function(path) {
-      return app.dynamicViewHelpers.scheme(req, res) + app.dynamicViewHelpers.url_no_scheme(path);
-    }
-  },
-  'url_no_scheme': function(req, res) {
-    return function(path) {
-      return '://' + app.dynamicViewHelpers.host(req, res) + path;
-    }
-  },
-});
-
-function render_page(req, res, pgPath) {
+function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
-      res.render(pgPath, {
-        layout:    false,
-        req:       req,
-        app:       app,
-        user:      user
-      });
+      res.render(pgPath, option);
     });
   });
 }
 
-function handle_request(req, res) {
+function handle_post_request(req, res) {
   if (req.method == 'POST') {
     var body = '';
     req.on('data', function (data) {
@@ -101,51 +77,28 @@ function handle_request(req, res) {
     });
     req.on('end', function () {
       var POST = qs.parse(body);
-      
-    });
-
-function handle_facebook_request(req, res) {
-
-  // if the user is logged in
-  if (req.facebook.token) {
-
-    async.parallel([
-      function(cb) {
-        // query 4 friends and send them to the socket for this socket id
-        req.facebook.get('/me/friends', { limit: 4 }, function(friends) {
-          req.friends = friends;
-          cb();
-        });
-      },
-      function(cb) {
-        // query 16 photos and send them to the socket for this socket id
-        req.facebook.get('/me/photos', { limit: 16 }, function(photos) {
-          req.photos = photos;
-          cb();
-        });
-      },
-      function(cb) {
-        // query 4 likes and send them to the socket for this socket id
-        req.facebook.get('/me/likes', { limit: 4 }, function(likes) {
-          req.likes = likes;
-          cb();
-        });
-      },
-      function(cb) {
-        // use fql to get a list of my friends that are using this app
-        req.facebook.fql('SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1', function(result) {
-          req.friends_using_app = result;
-          cb();
-        });
+      if (req.body.buttonClicked == 'gotoChallenge')
+      {
+        render_page(req,res,'challenge', {})
       }
-    ], function() {
-      render_page(req, res, 'index.ejs');
+      else if (req.body.buttonClicked == 'saveChallenge')
+      {
+        
+      }
+      else if (req.body.buttonClicked == 'saveEntry')
+      {
+        
+      }
+      else if (req.body.buttonClicked == 'gotoMain')
+      {
+        
+      }
+        res.send();
     });
 
-  } else {
+function handle_get_request(req, res) {
+
     render_page(req, res, 'index.ejs');
-  }
-  render_page(req, res);
 }
 function print_id() {
 	console.log(challenge_id);
@@ -163,8 +116,8 @@ app.get('/data', function (req, res) {
 });
 app.get('/view', function(req, res) { render_page(req, res, 'pg.ejs')});
 app.get('/index', function(req, res) { render_page(req, res, 'index.ejs')});
-app.get('/', handle_facebook_request);
-app.post('/', handle_facebook_request);
+app.get('/', handle_get_request);
+app.post('/', handle_post_request);
 app.get('*', function(req, res){
 	res.send('404 Sorry! Page is not found :(', 404);
 });
