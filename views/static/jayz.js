@@ -7,7 +7,7 @@ $(document).ready(function() {
 	$("#challenge-submit-button").click(function () {
 		$.ajax({
 			type: "POST",
-			url: "/index/",
+			url: "/category/",
 			data: { challenge: $('#challenge-input').val(),
 					unit: $('#unit-input').val(),
 					quant: $('input[name="quant"]:checked').val(),
@@ -21,7 +21,7 @@ $(document).ready(function() {
 	$("#challenge-button").click(function () {
 		$.ajax({
 			type: "POST",
-			url: "/challenge/",
+			url: "/entry/",
 			data: { },
 			success: function(data) {
 				location.reload();
