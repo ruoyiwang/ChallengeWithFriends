@@ -50,8 +50,8 @@ function render_page(req, res, pgPath, option) {
   });
 }
 
-function handle_catagory_post_request(req, res) {
-
+function handle_category_post_request(req, res) {
+  console.log('1');
   dbaccess.createChallenge(null, req.data.challenge, function(match)
   {
     render_page(req,res,'/views/challenge.html', {});
@@ -90,7 +90,7 @@ app.get('/data', function (req, res) {
 	render_page(req, res, 'data.ejs');
 	console.log("challenge_id: "+challenge_id);
 });
-app.post('/catagory', handle_catagory_post_request);
+app.post('/category', handle_category_post_request);
 app.post('/entry', handle_entry_post_request);
 app.get('/index', handle_index_get_request);
 app.post('/index', handle_entry_post_request);
