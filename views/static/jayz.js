@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	$("#submit-challenge-button").click(function () {
+		$('this').hide();
 		$('#form').show();
 	});
 

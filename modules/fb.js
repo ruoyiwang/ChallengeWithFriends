@@ -46,6 +46,7 @@ function get_list_of_friends(callback){
     });
 }
 
+<<<<<<< HEAD
 // Initialise the Photo Selector with options that will apply to all instances
 		CSPhotoSelector.init({debug: true});
 
@@ -74,3 +75,5 @@ function get_list_of_friends(callback){
 		fbphotoSelect(id);
 	});
 
+=======
+>>>>>>> a6186fe7f555920216f052b96a2efbf38fac88bf
