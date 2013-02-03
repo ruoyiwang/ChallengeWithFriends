@@ -4,7 +4,7 @@ var events   = require('events');
 var util     = require('util');
 var Dbaccess = require('./dbaccess').dbAccessor;
 var qs       = require('querystring');
-var mustache = require('mustache');
+var mustache = require('mu2');
 var url = require('url');
 var path = require('path');
 var fs = require('fs');
@@ -38,12 +38,11 @@ app.register('.html', mustache);
 
 
 function render_page(req, res, pgPath, option) {
-  fs.readFile(process.cwd()+pgPath, function (err, data) {
-    if (err) throw err;
-    var output = mustache.render(data.toString(), option);
-      console.log(output);
-      res.send(output);
-  });
+    var mu = require('mu2'); // notice the "2" which matches the npm repo, sorry..
+
+    mu.root = __dirname + '/views';
+    var stream = mu.compileAndRender(pgPath, option);
+    util.pump(stream, res);
 }
 
 function handle_category_post_request(req, res) {
@@ -56,7 +55,7 @@ function handle_category_post_request(req, res) {
 function handle_category_set_request(req, res) {
   //dbaccess.createChallenge(null, req.category, function(match)
   //{
-    render_page(req,res,'/views/challenge.html', {});
+    render_page(req,res,'challenge.html', {});
   //});
 }
 
@@ -74,7 +73,7 @@ function handle_get_request(req, res) {
   {
     console.log(match);
 
-    render_page(req, res, '/views/index.html', {"challenge_list":match});    
+    render_page(req, res, 'index.html', {"challenge_list":match});    
   });
 
 }
@@ -82,7 +81,7 @@ function handle_get_request(req, res) {
 function handle_index_get_request(req, res) {
   dbaccess.getEntriesByChallenge(req.data.challenge, function(match) 
   {
-    render_page(req, res, '/views/challenge.html', {});
+    render_page(req, res, 'challenge.html', {});
   });
 }
 
