@@ -23,6 +23,7 @@
 </header>
 <body>
 	<div id="fb-root"></div>
+	<input id="cid" style="display:none">{{cid}}</input>
 	<div id="CSPhotoSelector">
 		<div class="CSPhotoSelector_dialog">
 			<a href="#" id="CSPhotoSelector_buttonClose">x</a>
@@ -66,7 +67,6 @@
 	</div>
 	<script>
 	var accessToken;
-	var cid = {{cid}};
 	
 	window.fbAsyncInit = function() {
 		FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
@@ -129,7 +129,7 @@
 				$.ajax({
 					type: "POST",
 					url: "/entry/",
-					data: { photo: photo.source, challenge: cid },
+					data: { photo: photo.source, challenge: ('#cid').val() },
 					success: function(data) {
 						location.reload();
 					}
