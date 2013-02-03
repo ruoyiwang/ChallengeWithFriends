@@ -31,7 +31,7 @@ var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-
+app.register('.html', require('jade'));
 
 function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
@@ -44,7 +44,7 @@ function render_page(req, res, pgPath, option) {
 
 function handle_index_post_request(req, res) {
 
-  render_page(req,res,'challenge', {});
+  render_page(req,res,'challenge.html', {});
   /*dbaccess.createChallenge(creator, inTitle, inType, inMinmax, function(match)
   {
     render_page(req,res,'challenge.html', {});
@@ -53,7 +53,7 @@ function handle_index_post_request(req, res) {
 
 function handle_get_request(req, res) {
 
-  render_page(req, res, 'index', {});
+  render_page(req, res, 'index.html', {});
   /*if (req.method == "GET")
   {
     dbaccess.insert(null, function(match)
