@@ -66,6 +66,7 @@
 	</div>
 	<script>
 	var accessToken;
+	var cid = {{cid}};
 	
 	window.fbAsyncInit = function() {
 		FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
@@ -128,7 +129,7 @@
 				$.ajax({
 					type: "POST",
 					url: "/entry/",
-					data: { photo: photo.source },
+					data: { photo: photo.source, challenge: cid },
 					success: function(data) {
 						location.reload();
 					}
@@ -198,14 +199,16 @@
 	<div id="content">
 		<h1>Category: <span class="italic">{{challenge_title}}</span></h1>
 		<div id="photos">
-
+			{{#photos}}
+			<img style="float:left; border: 3px solid rgb(255,255,255)"src="{{url}}">
+			{{/photos}}
 		</div>
 	</div>
 	<div id="background" class="transparent">
 		<img src="http://www.pue.itesm.mx/comunicacion/ProgramasInternacionales/img/Paises/32/Universidades/16/waterloo.jpg">
 	</div>
 	<div id="challenge-button-container">
-		<button id="challenge-button">Beat it</button>
+		<button id="challenge-button">Add a photo</button>
 	</div>
 	<div id="form" style="display:none">
 		<div class="ribbon"><h2>Create Challenge</h2></div>
