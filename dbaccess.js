@@ -23,7 +23,7 @@ dbAccessor.prototype._db = _db;
 dbAccessor.prototype.getChallenges = function(callback) {
 	var cursor = this._challenges.find({},function(err,cursor){
 		var list = [];
-		cursor.foreach(function(item){
+		cursor.forEach(function(item){
 			list.append(item);
 		});
 		callback(list);
