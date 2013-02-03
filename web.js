@@ -34,7 +34,6 @@ var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-app.register('.html', mustache);
 
 
 function render_page(req, res, pgPath, option) {
