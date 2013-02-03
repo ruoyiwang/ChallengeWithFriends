@@ -23,6 +23,47 @@
 </header>
 <body>
 	<div id="fb-root"></div>
+	<div id="CSPhotoSelector">
+		<div class="CSPhotoSelector_dialog">
+			<a href="#" id="CSPhotoSelector_buttonClose">x</a>
+			<div class="CSPhotoSelector_form">
+				<div class="CSPhotoSelector_header">
+					<p>Choose from Photos</p>
+				</div>
+
+				<div class="CSPhotoSelector_content CSAlbumSelector_wrapper">
+					<p>Browse your albums until you find a picture you want to use</p>
+					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+						<div class="CSPhotoSelector_selectedCountContainer">Select an album</div>
+					</div>
+					<div class="CSPhotoSelector_photosContainer CSAlbum_container"></div>
+				</div>
+
+				<div class="CSPhotoSelector_content CSPhotoSelector_wrapper">
+					<p>Select a new photo</p>
+					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+						<div class="CSPhotoSelector_selectedCountContainer"><span class="CSPhotoSelector_selectedPhotoCount">0</span> / <span class="CSPhotoSelector_selectedPhotoCountMax">0</span> photos selected</div>
+						<a href="#" id="CSPhotoSelector_backToAlbums">Back to albums</a>
+					</div>
+					<div class="CSPhotoSelector_photosContainer CSPhoto_container"></div>
+				</div>
+
+				<div id="CSPhotoSelector_loader"></div>
+
+
+				<div class="CSPhotoSelector_footer CSPhotoSelector_clearfix">
+					<a href="#" id="CSPhotoSelector_pagePrev" class="CSPhotoSelector_disabled">Previous</a>
+					<a href="#" id="CSPhotoSelector_pageNext">Next</a>
+					<div class="CSPhotoSelector_pageNumberContainer">
+						Page <span id="CSPhotoSelector_pageNumber">1</span> / <span id="CSPhotoSelector_pageNumberTotal">1</span>
+					</div>
+					
+					<a href="#" style="visible: false;" id="CSPhotoSelector_buttonCancel">Cancel</a>
+					<a href="#"  id="CSPhotoSelector_buttonOK">OK</a>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script>
 		<!-- init fb -->
 		var accessToken;
@@ -189,47 +230,6 @@
 			<input id="challenge-input"></br>
 		</form>
 		<button onclick="picGo()" id="challenge-submit-button">Create</button>
-	</div>
-	<div id="CSPhotoSelector">
-		<div class="CSPhotoSelector_dialog">
-			<a href="#" id="CSPhotoSelector_buttonClose">x</a>
-			<div class="CSPhotoSelector_form">
-				<div class="CSPhotoSelector_header">
-					<p>Choose from Photos</p>
-				</div>
-
-				<div class="CSPhotoSelector_content CSAlbumSelector_wrapper">
-					<p>Browse your albums until you find a picture you want to use</p>
-					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
-						<div class="CSPhotoSelector_selectedCountContainer">Select an album</div>
-					</div>
-					<div class="CSPhotoSelector_photosContainer CSAlbum_container"></div>
-				</div>
-
-				<div class="CSPhotoSelector_content CSPhotoSelector_wrapper">
-					<p>Select a new photo</p>
-					<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
-						<div class="CSPhotoSelector_selectedCountContainer"><span class="CSPhotoSelector_selectedPhotoCount">0</span> / <span class="CSPhotoSelector_selectedPhotoCountMax">0</span> photos selected</div>
-						<a href="#" id="CSPhotoSelector_backToAlbums">Back to albums</a>
-					</div>
-					<div class="CSPhotoSelector_photosContainer CSPhoto_container"></div>
-				</div>
-
-				<div id="CSPhotoSelector_loader"></div>
-
-
-				<div class="CSPhotoSelector_footer CSPhotoSelector_clearfix">
-					<a href="#" id="CSPhotoSelector_pagePrev" class="CSPhotoSelector_disabled">Previous</a>
-					<a href="#" id="CSPhotoSelector_pageNext">Next</a>
-					<div class="CSPhotoSelector_pageNumberContainer">
-						Page <span id="CSPhotoSelector_pageNumber">1</span> / <span id="CSPhotoSelector_pageNumberTotal">1</span>
-					</div>
-					
-					<a href="#" style="visible: false;" id="CSPhotoSelector_buttonCancel">Cancel</a>
-					<a href="#"  id="CSPhotoSelector_buttonOK">OK</a>
-				</div>
-			</div>
-		</div>
 	</div>
 </body>
 <footer>
