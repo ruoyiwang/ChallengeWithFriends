@@ -10,8 +10,8 @@ $(document).ready(function() {
 			url: "/index/",
 			data: { challenge: $('#challenge-input').val(),
 					unit: $('#unit-input').val(),
-					quant: $('input[@name="quant"]:checked').val(),
-					order: $('input[@name="order"]:checked').val()},
+					quant: $('input[name="quant"]:checked').val(),
+					order: $('input[name="order"]:checked').val()},
 			success: function(data) {
 				location.reload();
 			}
