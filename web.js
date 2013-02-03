@@ -41,7 +41,6 @@ function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
       fs.readFile(process.cwd()+pgPath, function (err, data) {
-        console.log('Current directory: ' + process.cwd());
         if (err) throw err;
         var output = mustache.render(data.toString(), option);
         res.send(output);
@@ -53,6 +52,7 @@ function render_page(req, res, pgPath, option) {
 function handle_category_post_request(req, res) {
   dbaccess.createChallenge(null, req.category, function(match)
   {
+    console.log( req.category);
     res.redirect('/category');
   });
 }
@@ -60,7 +60,6 @@ function handle_category_post_request(req, res) {
 function handle_category_set_request(req, res) {
   //dbaccess.createChallenge(null, req.category, function(match)
   //{
-    console.log("test3");
     render_page(req,res,'/views/challenge.html', {});
   //});
 }
@@ -78,7 +77,7 @@ function handle_get_request(req, res) {
   dbaccess.getChallenges(function (match)
   {
     console.log(match);
-    
+
     render_page(req, res, '/views/index.html', {challenge_list:match});    
   });
 
