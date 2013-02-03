@@ -30,7 +30,7 @@ dbAccessor.prototype.getEntries = function(callback) {
 
 dbAccessor.prototype.getTopPlacer = function( challenge, callback ) {
 		var match = this._challenges.findOne({ title: challenge });
-		var top = match.entries.find().sort({ maxmetric: -1, minmetric: 1, upvotes:-1 }).limit(1);
+		var top = match.entries.find().sort({ upvotes:-1 }).limit(1);
 		callback(top);
 };
 
@@ -69,12 +69,16 @@ dbAccessor.prototype.findChallenges = function( query, callback ) {
 		callback(match);
 };
 
-dbAccessor.prototype.createEntry = function( creator, inTitle, inChallenge, inMetric, inContent, callback ) {
-		this._entries.save({ user: creator, title: inTitle, challenge: inChallenge, metric: inMetric, content: inContent }, { safe: true }, callback);
+dbAccessor.prototype.createEntry = function( creator, inTitle, inChallenge, inContent, callback ) {
+		this._entries.save({ user: creator, title: inTitle, challenge: inChallenge, metric: 0, content: inContent }, { safe: true }, callback);
 };
 
-dbAccessor.prototype.createChallenge = function( creator, inTitle, inType, inMinmax, callback ) {
-		this._challenges.save({ user: creator, title: inTitle, type: inType, minmax: inMinmax }, { safe: true }, callback);
+dbAccessor.prototype.upvote = function( entry, callback ) {
+		this._entries.save({ user: entry.user, title: entry.title, challenge: entry.challenge, metric: entry.metric+1, content: entry.content }, { safe: true }, callback);
+};
+
+dbAccessor.prototype.createChallenge = function( creator, inTitle, callback ) {
+		this._challenges.save({ user: creator, title: inTitle }, { safe: true }, callback);
 };
 
 
