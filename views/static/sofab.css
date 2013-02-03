@@ -158,6 +158,22 @@ button {
 	width: 250px;
 }
 
+#form .ribbon {
+	background: rgb(22,147,165);
+	width: 350px;
+}
+
+#challenge-list .ribbon {
+	background: rgb(255,255,255);
+	width: 450px;
+	margin-bottom: 10px;
+}
+
+#form h2 {
+	color: rgb(255,255,255) !important;
+	font-size: 1.5em;
+}
+
 .ribbon h2::before {left: 0;}
 .ribbon h2::after {right: 0;}
 
@@ -243,10 +259,10 @@ footer hr {
 #form {
 	position: absolute;
 	top: 0;
-	right: 0;
-	background-color: rgb(255,255,255);
-	width: 450px;
-	height: 650px;
+	right: 25px;
+	background-color: rgba(22,147,165,0.85);
+	width: 350px;
+	height: 450px;
 	margin: 0 auto;
 	margin-top: 20px;
 	line-height: 30px;
@@ -255,10 +271,24 @@ footer hr {
 
 #form form {
 	font-family: 'Open Sans', 'Arial', sans-serif;
-	padding: 25px;
+	padding-top: 40px;
+	padding-left: 68px;
+	padding-bottom: 50px;
 }
 
 #form button {
-	margin-left: 25px;
+	background-color: rgb(255,255,255);
+	border: 0;
+	margin-left: 132px;
 	width: 80px;
+	height: 30px;
+}
+
+#challenge-list {
+	width: 450px;
+	height: 600px;
+	margin: 0 auto;
+	margin-top: 25px;
+	padding-top: 10px;
+	background-color: rgba(255,255,255,0.5);
 }

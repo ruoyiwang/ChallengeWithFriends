@@ -45,7 +45,14 @@
 	<div id="background">
 		<img src="http://www.pue.itesm.mx/comunicacion/ProgramasInternacionales/img/Paises/32/Universidades/16/waterloo.jpg">
 	</div>
-	<div id="form" style="display:none">
+	<div id="challenge-list">
+		<div class="ribbon"><h2>Challenges</h2></div>
+		{{#challenge_list}}
+		<span>{{user}} {{title}} {{type}} {{minmax}}</span> 
+		{{/challenge_list}}
+	</div>
+	<div id="form">
+		<div class="ribbon"><h2>Create Challenge</h2></div>
 		<form>
 			<label>Challenge</label></br>
 			<input id="challenge-input"></br>
