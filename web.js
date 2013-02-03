@@ -35,7 +35,7 @@ app.listen(port, function() {
 });
 app.register('.html', mustache);
 
-unction loadTemplate(template) {
+function loadTemplate(template) {
     return this.fs.readFileSync(app.set('views') + template+ '.html')+ '';
 }
 
