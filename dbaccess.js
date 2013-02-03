@@ -21,7 +21,7 @@ _db.once('open', function callback () {
 dbAccessor.prototype._db = _db;
 
 dbAccessor.prototype.getChallenges = function(callback) {
-	var cursor = this._challenges.find({},function(err,cursor){
+	this._challenges.find({},function(err,cursor){
 		var list = [];
 		cursor.forEach(function(item){
 			list.append(item);
@@ -31,9 +31,9 @@ dbAccessor.prototype.getChallenges = function(callback) {
 };
 
 dbAccessor.prototype.getEntries = function(callback) {
-	var cursor = this._entries.find({},function(err,cursor){
+	this._entries.find({},function(err,cursor){
 		var list = [];
-		cursor.foreach(function(item){
+		cursor.forEach(function(item){
 			list.append(item);
 		});
 		callback(list);
