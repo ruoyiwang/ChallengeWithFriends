@@ -65,31 +65,22 @@
 		</div>
 	</div>
 	<script>
-		<!-- init fb -->
-		var accessToken;
-		window.fbAsyncInit = function() {
-			FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
-			FB.Event.subscribe('auth.login', function() {
-			  window.location.reload();
-			});
-			
+	var accessToken;
 	
-		};
-		FB.login(function (response) {
-				if (response.authResponse) {
-					$("#login-status").html("Logged in");
-				} else {
-					$("#login-status").html("Not logged in");
-				}
-			}, {scope:'user_photos,friends_photos'});
-		(function() {
-			var js = document.createElement('script');
-			js.type = 'text/javascript';
-			js.src = "//connect.facebook.net/en_US/all.js";
-			js.async = true;
-			document.getElementById('fb-root').appendChild(js);
-		}());
-		<!-- finish init -->
+	window.fbAsyncInit = function() {
+		FB.init({appId : '126895384148490', status : true, cookie : true, oauth : true, xfbml : true});
+		FB.Event.subscribe('auth.login', function() {
+		  window.location.reload();
+		});
+	};
+	
+	(function() {
+		var js = document.createElement('script');
+		js.type = 'text/javascript';
+		js.src = "//connect.facebook.net/en_US/all.js";
+		js.async = true;
+    	document.getElementById('fb-root').appendChild(js);
+    }());
 		
 		var selector, logActivity, callbackAlbumSelected, callbackPhotoUnselected, callbackSubmit;
 		var buttonOK = $('#CSPhotoSelector_buttonOK');
