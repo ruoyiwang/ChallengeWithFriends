@@ -62,7 +62,7 @@ function handle_get_request(req, res) {
 
   dbaccess.findChallenges(null, function (match)
   {
-    render_page(req, res, '/views/index.html', match);    
+    render_page(req, res, '/views/index.html', {challenge_list:match});    
   });
 
 }
