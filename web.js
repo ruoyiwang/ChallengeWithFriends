@@ -39,7 +39,7 @@ app.register('.html', mustache);
 function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
-      fs.readFile(pgPath, function (err, data) {
+      fs.readFile(process.cwd()+pgPath, function (err, data) {
         console.log('Current directory: ' + process.cwd());
         if (err) throw err;
         var output = mustache.render(data.toString(), option);
