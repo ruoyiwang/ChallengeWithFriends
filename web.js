@@ -56,7 +56,7 @@ function handle_challenge_post_request(req, res) {
   {
     render_page(req,res,'/views/challenge.html', {});
   });
-}f
+}
 
 function handle_entry_post_request(req, res) {
 
@@ -79,7 +79,7 @@ function handle_index_get_request(req, res) {
   dbaccess.getEntriesByChallenge(req.data.challenge, function(match) {
     render_page(req, res, '/views/challenge.html', {});
   });
-}f
+}
 
 // Routing the pages
 app.get('/data', function (req, res) {
