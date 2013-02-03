@@ -67,7 +67,7 @@ function handle_entry_post_request(req, res) {
 
 function handle_get_request(req, res) {
 
-  dbaccess.getChallenges(function (err, match)
+  dbaccess.getChallenges(function (match)
   {
 
     var opts = {"challenge_list": match};
