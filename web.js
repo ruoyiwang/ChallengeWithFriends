@@ -51,7 +51,7 @@ function render_page(req, res, pgPath, option) {
 }
 
 function handle_category_post_request(req, res) {
-  dbaccess.createChallenge(null, req.data.category, function(match)
+  dbaccess.createChallenge(null, req.body.data.category, function(match)
   {
     render_page(req,res,'/views/challenge.html', {});
   });
