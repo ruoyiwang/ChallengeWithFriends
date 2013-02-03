@@ -2,13 +2,35 @@ var async    = require('async');
 var express  = require('express');
 var events   = require('events');
 var util     = require('util');
-var mongoose = require('mongoose');
 var Dbaccess = require('./dbaccess').dbAccessor;
 var qs       = require('querystring');
 var url = require('url');
 var path = require('path');
 
 var challenge_id = -1;
+
+// create an express webserver
+var app = express.createServer(
+  express.logger(),
+  express.static(__dirname + '/public'),
+  express.bodyParser(),
+  express.cookieParser(),
+  // set this to a secret value to encrypt session cookies
+  express.session({ secret: process.env.SESSION_SECRET || 'secret123' }),
+  require('faceplate').middleware({
+    app_id: process.env.FACEBOOK_APP_ID,
+    secret: process.env.FACEBOOK_SECRET,
+    scope:  'user_likes,user_photos,user_photo_video_tags'
+  })
+);
+
+// listen to the PORT given to us in the environment
+var port = process.env.PORT || 3000;
+
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
+
 
 Eventer = function(){
   events.EventEmitter.call(this);
@@ -39,29 +61,8 @@ var listener = new Listener(eventer);
 eventer.on('createChallenge',listener.createChallengeHandler);
 eventer.on('createEntry',listener.createEntryHandler);
 
-// create an express webserver
-var app = express.createServer(
-  express.logger(),
-  express.static(__dirname + '/public'),
-  express.bodyParser(),
-  express.cookieParser(),
-  // set this to a secret value to encrypt session cookies
-  express.session({ secret: process.env.SESSION_SECRET || 'secret123' }),
-  require('faceplate').middleware({
-    app_id: process.env.FACEBOOK_APP_ID,
-    secret: process.env.FACEBOOK_SECRET,
-    scope:  'user_likes,user_photos,user_photo_video_tags'
-  })
-);
 
-// listen to the PORT given to us in the environment
-var port = process.env.PORT || 3000;
-
-app.listen(port, function() {
-  console.log("Listening on " + port);
-});
-
-function render_page(req, res, pgPath, option) {
+function render_page(req, res, pgPath) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
       res.render(pgPath, option);
@@ -79,7 +80,7 @@ function handle_post_request(req, res) {
       var POST = qs.parse(body);
       if (req.body.buttonClicked == 'gotoChallenge')
       {
-        render_page(req,res,'challenge', {})
+        render_page(req,res,'challenge', {});
       }
       else if (req.body.buttonClicked == 'saveChallenge')
       {
@@ -87,7 +88,6 @@ function handle_post_request(req, res) {
       }
       else if (req.body.buttonClicked == 'saveEntry')
       {
-        
       }
       else if (req.body.buttonClicked == 'gotoMain')
       {
