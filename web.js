@@ -33,36 +33,6 @@ app.listen(port, function() {
 });
 
 
-Eventer = function(){
-  events.EventEmitter.call(this);
-  this.createChallenge = function( creator, inTitle, inType, inMinmax ){
-    this.emit('createChallenge',  creator, inTitle, inType, inMinmax );
-  }
-
-  this.createEntry = function(creator, inTitle, inChallenge, inMetric, inContent ){
-    this.emit('createEntry', creator, inTitle, inChallenge, inMetric, inContent );
-  }
- };
-
-util.inherits(Eventer, events.EventEmitter);
-
-Listener = function(){
-  this.createChallengeHandler =  function( creator, inTitle, inType, inMinmax ){
-    //console.log('works');
-    dbaccess.createChallenge( creator, inTitle, inType, inMinmax );
-  },
-  this.createEntryHandler = function(creator, inTitle, inChallenge, inMetric, inContent ){
-    dbaccess.createEntry(userId, Value, challengeName);
-  }
-};
-
-var eventer = new Eventer();
-var listener = new Listener(eventer);
-
-eventer.on('createChallenge',listener.createChallengeHandler);
-eventer.on('createEntry',listener.createEntryHandler);
-
-
 function render_page(req, res, pgPath) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
@@ -72,20 +42,23 @@ function render_page(req, res, pgPath) {
 }
 
 function handle_index_post_request(req, res) {
-  dbaccess.findEntriesBychallenge(null, function(match)
+
+  render_page(req,res,'challenge.html', {});
+  /*dbaccess.createChallenge(creator, inTitle, inType, inMinmax, function(match)
   {
     render_page(req,res,'challenge.html', {});
-  });
+  });*/
 }
 
 function handle_get_request(req, res) {
-  if (req.method == "GET")
+
+  render_page(req, res, 'index.html', {});
+  /*if (req.method == "GET")
   {
     dbaccess.insert(null, function(match)
     {
-      render_page(req, res, 'index.html', match);
     });
-  }
+  }*/
 
 }
 function print_id() {
