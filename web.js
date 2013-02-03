@@ -69,9 +69,9 @@ function handle_get_request(req, res) {
 
   dbaccess.getChallenges(function (err, match)
   {
-    console.log(match);
 
-    render_page(req, res, 'index.html', {"challenge_list":match});    
+    var opts = {"challenge_list": match};
+    render_page(req, res, 'index.html', opts);    
   });
 
 }
