@@ -21,13 +21,14 @@ $(document).ready(function() {
 	});
 
 	$("#challenge-button").click(function () {
-		$.ajax({
+		picGo();
+		/*$.ajax({
 			type: "POST",
 			url: "/entry/",
 			data: { },
 			success: function(data) {
 				location.reload();
 			}
-		});	
+		});*/	
 	});
 });
