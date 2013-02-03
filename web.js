@@ -31,7 +31,7 @@ var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
-app.register('.html', require('jade'));
+app.register('.html', require('mustache'));
 
 function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
