@@ -38,8 +38,6 @@ app.register('.html', mustache);
 
 
 function render_page(req, res, pgPath, option) {
-    var mu = require('mu2'); // notice the "2" which matches the npm repo, sorry..
-
     mu.root = __dirname + '/views';
     var stream = mu.compileAndRender(pgPath, option);
     util.pump(stream, res);
