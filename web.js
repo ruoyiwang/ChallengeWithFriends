@@ -50,9 +50,9 @@ function render_page(req, res, pgPath, option) {
 }
 
 function handle_category_post_request(req, res) {
-  dbaccess.createChallenge(null, req.category, function(match)
+  dbaccess.createChallenge(null, req.body.category, function(match)
   {
-    console.log( req.category);
+    console.log( req.body);
     res.redirect('/category');
   });
 }
