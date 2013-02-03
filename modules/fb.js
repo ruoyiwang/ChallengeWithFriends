@@ -13,12 +13,6 @@ function make_url(call){
     return call + '&access_token='+roys_token;
 }
 
-function get_https(url){
-    $.get(url,function(data,status){
-        alert("Data: " + data + "\nStatus: " + status);
-        d = data;
-    });
-}
 
 function get_self_id(){
     var url = make_url('/me?fields=id');
@@ -30,7 +24,7 @@ function get_self_id(){
 
 //callback with the profile picture url
 function get_friends_profile_picture(id, callback){
-    call = '/me?fields=id,friends.uid('+id+').fields(username)';
+    var call = '/me?fields=id,friends.uid('+id+').fields(username)';
     call = make_url(call);
     FB.api(url, function(response){
         friend_user_name = response.username;
@@ -52,4 +46,31 @@ function get_list_of_friends(callback){
     });
 }
 
+// Initialise the Photo Selector with options that will apply to all instances
+		CSPhotoSelector.init({debug: true});
+
+		// Create Photo Selector instances
+		selector = CSPhotoSelector.newInstance({
+			callbackAlbumSelected	: callbackAlbumSelected,
+			callbackAlbumUnselected	: callbackAlbumUnselected,
+			callbackPhotoSelected	: callbackPhotoSelected,
+			callbackPhotoUnselected	: callbackPhotoUnselected,
+			callbackSubmit			: callbackSubmit,
+			maxSelection			: 1,
+			albumsPerPage			: 6,
+			photosPerPage			: 200,
+			autoDeselection			: true
+		});
+
+		// reset and show album selector
+		selector.reset();
+		selector.showAlbumSelector(id);
+	}
+
+	$(".photoSelect").click(function (e) {
+		e.preventDefault();
+		id = null;
+		if ( $(this).attr('data-id') ) id = $(this).attr('data-id');
+		fbphotoSelect(id);
+	});
 
