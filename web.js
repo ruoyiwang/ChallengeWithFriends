@@ -37,7 +37,8 @@ function render_page(req, res, pgPath, option) {
   req.facebook.app(function(app) {
     req.facebook.me(function(user) {
       console.log(pgPath);
-      res.render(pgPath, option);
+      var html = mustache.render(pgPath,option);
+      res.render(html);
     });
   });
 }
